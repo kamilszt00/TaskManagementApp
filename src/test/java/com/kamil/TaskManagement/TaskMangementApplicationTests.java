@@ -1,4 +1,4 @@
-package com.kamil.TaskMangement;
+package com.kamil.TaskManagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
