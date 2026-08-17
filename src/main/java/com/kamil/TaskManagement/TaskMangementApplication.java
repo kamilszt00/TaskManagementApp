@@ -13,14 +13,7 @@ public class TaskMangementApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TaskMangementApplication.class, args);
-		var context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
-		var taskRepo = context.getBean(TaskRepository.class);
-		var taskService = context.getBean(TaskService.class);
-		taskRepo.addToList(new Task("Start","0","unknown"));
-		taskRepo.addToList(new Task("Start","1","unknown"));
-		taskRepo.addToList(new Task("Start","2","unknown"));
 
-		System.out.println(taskService.getTaskRepositoryList());
 
 
 	}

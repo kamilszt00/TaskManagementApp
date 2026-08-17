@@ -1,24 +1,24 @@
 package com.kamil.TaskManagement.model;
 
 public class Task {
-    private final String id;
+    private final int id;
     private final String status;
     private final String title;
 
 
     public Task() {
         this.title = "default";
-        this.id = "000";
+        this.id = 0;
         this.status = "unknown";
     }
 
-    public Task(String title, String id, String status) {
+    public Task(int id, String title, String status) {
         this.title=title;
         this.id=id;
         this.status=status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -32,6 +32,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.join("|", title, id , status);
+        return id + " | " + String.join("|", title , status);
     }
 }
