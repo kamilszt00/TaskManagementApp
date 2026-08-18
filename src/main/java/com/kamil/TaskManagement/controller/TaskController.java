@@ -3,8 +3,12 @@ package com.kamil.TaskManagement.controller;
 
 import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.service.TaskService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +25,18 @@ public class TaskController {
     @GetMapping("/tasks")
     public List<Task> viewTasks() {
         return taskService.getTaskRepositoryList();
+    }
+
+
+
+
+
+    @GetMapping("/onetask")
+    public ResponseEntity<Task> viewOneTask(@RequestBody Task task) {
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(task);
     }
 
 

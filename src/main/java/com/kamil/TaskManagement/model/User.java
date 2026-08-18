@@ -5,23 +5,21 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
-
-
-
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "TASKS_TBL")
-public class Task {
+@Table(name = "USERS_TBL")
+public class User {
+
     @Id
     @GeneratedValue
     private Integer id;
-    private String status;
-    private String title;
 
-    @Column(nullable = false)
-    private LocalDateTime dueDate;
+    @Column (length = 35,name = "u_name")
+    private String username;
 
+    @Column (unique = true,nullable = false)
+    private String email;
+
+    private String role;
 }

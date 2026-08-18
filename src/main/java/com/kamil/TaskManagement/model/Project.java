@@ -7,21 +7,22 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
-
-
-@Entity
 @Data
+@Entity
+@Table(name = "PROJECTS_TBL")
 @NoArgsConstructor
-@Table(name = "TASKS_TBL")
-public class Task {
+public class Project {
+
     @Id
     @GeneratedValue
     private Integer id;
-    private String status;
-    private String title;
 
-    @Column(nullable = false)
-    private LocalDateTime dueDate;
+    @Column(length = 35)
+    private String name;
 
+
+    private String description;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
