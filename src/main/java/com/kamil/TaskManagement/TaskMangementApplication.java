@@ -1,5 +1,6 @@
 package com.kamil.TaskManagement;
 
+import com.github.javafaker.Faker;
 import com.kamil.TaskManagement.config.ApplicationConfiguration;
 import com.kamil.TaskManagement.model.Tag;
 import com.kamil.TaskManagement.model.Task;
@@ -29,13 +30,23 @@ public class TaskMangementApplication {
 			TagRepository tagRepository
 	) {
 		return args -> {
-			var task = Task.builder().id(null).status("nie").title("starting").dueDate(LocalDateTime.now()).build();
-			repository.save(task);
-            List<Tag> tags = new ArrayList<>();
-			tags.add(Tag.builder().id(null).tag_name("Urgent").build());
-			tags.add(Tag.builder().id(null).tag_name("Bug").build());
-			tags.add(Tag.builder().id(null).tag_name("Enhancement").build());
-            tagRepository.saveAll(tags);
+//			for (int i = 0; i < 50; i++) {
+//				Faker faker = new Faker();
+//				var task = Task.builder()
+//						.id(null)
+//						.status(faker.options().option("TODO", "IN_PROGRESS", "IN_REVIEW", "COMPLETED"))
+//						.title(faker.company().bs())
+//						.dueDate(LocalDateTime.now().plusDays(faker.number().numberBetween(1,30)))
+//						.build();
+//				repository.save(task);
+//
+//			}
+//
+//			List<Tag> tags = new ArrayList<>();
+//			tags.add(Tag.builder().id(null).tag_name("URGENT").build());
+//			tags.add(Tag.builder().id(null).tag_name("BUG").build());
+//			tags.add(Tag.builder().id(null).tag_name("ENHANCEMENT").build());
+//			tagRepository.saveAll(tags);
 		};
 	}
 
