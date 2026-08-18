@@ -2,19 +2,26 @@ package com.kamil.TaskManagement.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Table(name = "TAGS_TBL")
-@NoArgsConstructor
+import java.util.List;
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "TAGS_TBL")
 public class Tag {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    @Column(insertable = false, updatable = false)
+    @Column( updatable = false)
     private String tag_name;
+
 }

@@ -2,12 +2,18 @@ package com.kamil.TaskManagement.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "USERS_TBL")
 public class User {
 
@@ -22,4 +28,7 @@ public class User {
     private String email;
 
     private String role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Task> tasks;
 }
