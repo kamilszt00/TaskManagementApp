@@ -10,4 +10,5 @@ import java.util.Set;
 public interface TaskRepository extends JpaRepository<Task,Integer> {
 
     List<Task> findAllById(Integer id);
+
 }

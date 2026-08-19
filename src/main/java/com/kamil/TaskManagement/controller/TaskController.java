@@ -18,12 +18,18 @@ public class TaskController {
     }
 
 
-    @GetMapping("/tasks")
+    @PostMapping("/tasks")
     public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
         TaskResponse taskResponse = taskService.createTask(request);
             return ResponseEntity
                     .status(HttpStatusCode.valueOf(201))
                     .body(taskResponse);
+
+    }
+
+    @GetMapping("/tasks/{id}")
+    public ResponseEntity<TaskResponse> getTask(@PathVariable Integer id) {
+        return taskService.getTask(id);
 
     }
 

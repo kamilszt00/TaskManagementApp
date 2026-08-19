@@ -21,6 +21,7 @@ public class CreateTaskRequest {
     private LocalDateTime DueDate;
     private Integer projectID;
     private Integer assigneeID;
+    private Set<Integer> tagsID;
 
 
 }

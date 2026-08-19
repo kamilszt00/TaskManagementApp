@@ -10,9 +10,11 @@ import com.kamil.TaskManagement.repository.TagRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.yaml.snakeyaml.tokens.Token.ID.Tag;
 
@@ -44,8 +46,30 @@ public class TaskService {
                 .title(createdTask.getTitle())
                 .status(createdTask.getStatus())
                 .projectID(createdTask.getId())
-                .tagsID(createdTask.getTags())
+                .assigneeID(createdTask.getUser().getId())
                 .build();
+    }
+
+
+    public ResponseEntity<TaskResponse> getTask(Integer id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+
+
+            TaskResponse theTask = TaskResponse.builder()
+                                    .id(task.getId())
+                                    .title(task.getTitle())
+                                    .status(task.getStatus())
+                                    .projectID(task.getProject().getId())
+                                    .assigneeID(task.getUser().getId())
+                                    .build();
+
+            return ResponseEntity.ok(theTask);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 
