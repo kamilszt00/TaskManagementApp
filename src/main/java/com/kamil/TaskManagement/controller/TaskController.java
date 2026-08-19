@@ -1,14 +1,12 @@
 package com.kamil.TaskManagement.controller;
 
 
-import com.kamil.TaskManagement.model.Task;
+import com.kamil.TaskManagement.DTO.CreateTaskRequest;
+import com.kamil.TaskManagement.DTO.TaskResponse;
 import com.kamil.TaskManagement.service.TaskService;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class TaskController {
@@ -19,9 +17,14 @@ public class TaskController {
       this.taskService = taskService;
     }
 
+
     @GetMapping("/tasks")
-    public List<Task> viewTasks() {
-        return taskService.getTaskRepositoryList();
+    public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
+        TaskResponse taskResponse = taskService.createTask(request);
+            return ResponseEntity
+                    .status(HttpStatusCode.valueOf(201))
+                    .body(taskResponse);
+
     }
 
 
@@ -31,13 +34,6 @@ public class TaskController {
 
 
 
-    @GetMapping("/onetask")
-    public ResponseEntity<Task> viewOneTask(@RequestBody Task task) {
-
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(task);
-    }
 
 
 

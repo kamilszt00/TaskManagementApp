@@ -37,26 +37,26 @@ public class TaskMangementApplication {
 			UserRepository userRepository, ProjectRepository projectRepository, TaskRepository taskRepository) {
 		return args -> {
 
-			Faker faker = new Faker();
-			Random random = new Random();
-			List<User> allUsers = userRepository.findAll();
-			List<Tag> allTags = tagRepository.findAll();
-			List<Project> allProjects = projectRepository.findAll();
-
-			for (Project project : allProjects) {
-				for(int i = 0; i < 50; i++) {
-					var task = Task.builder()
-							.id(null)
-							.status(faker.options().option("TODO", "IN_PROGRESS", "IN_REVIEW", "COMPLETED"))
-							.title(faker.hacker().verb() + " the " + faker.hacker().noun())
-							.tags(Set.of(allTags.get(random.nextInt(allTags.size()))))
-							.dueDate(LocalDateTime.now().plusDays(faker.number().numberBetween(1,30)))
-							.project(project)
-							.user(allUsers.get(random.nextInt(allUsers.size())))
-							.build();
-							taskRepository.save(task);
-				}
-			}
+//			Faker faker = new Faker();
+//			Random random = new Random();
+//			List<User> allUsers = userRepository.findAll();
+//			List<Tag> allTags = tagRepository.findAll();
+//			List<Project> allProjects = projectRepository.findAll();
+//
+//			for (Project project : allProjects) {
+//				for(int i = 0; i < 50; i++) {
+//					var task = Task.builder()
+//							.id(null)
+//							.status(faker.options().option("TODO", "IN_PROGRESS", "IN_REVIEW", "COMPLETED"))
+//							.title(faker.hacker().verb() + " the " + faker.hacker().noun())
+//							.tags(Set.of(allTags.get(random.nextInt(allTags.size()))))
+//							.dueDate(LocalDateTime.now().plusDays(faker.number().numberBetween(1,30)))
+//							.project(project)
+//							.user(allUsers.get(random.nextInt(allUsers.size())))
+//							.build();
+//							taskRepository.save(task);
+//				}
+//			}
 
 
 
