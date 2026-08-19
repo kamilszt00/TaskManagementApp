@@ -33,6 +33,11 @@ public class TaskController {
 
     }
 
+    @PutMapping("/task/{id}")
+    public ResponseEntity<TaskResponse> putTask(@RequestBody CreateTaskRequest request) {
+        return taskService.updateTask(request);
+    }
+
 
 
 

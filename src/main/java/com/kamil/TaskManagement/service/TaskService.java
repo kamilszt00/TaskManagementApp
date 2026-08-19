@@ -55,8 +55,6 @@ public class TaskService {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
-
-
             TaskResponse theTask = TaskResponse.builder()
                                     .id(task.getId())
                                     .title(task.getTitle())
@@ -64,11 +62,15 @@ public class TaskService {
                                     .projectID(task.getProject().getId())
                                     .assigneeID(task.getUser().getId())
                                     .build();
-
             return ResponseEntity.ok(theTask);
         } else {
             return ResponseEntity.notFound().build();
         }
+        }
+
+
+    public ResponseEntity<TaskResponse> updateTask(CreateTaskRequest request) {
+
 
     }
 
