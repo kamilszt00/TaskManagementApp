@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,8 @@ public class User {
 
     private String role;
 
+
+    @Builder.Default
     @OneToMany(mappedBy = "user")
-    private Set<Task> tasks;
+    private Set<Task> tasks = new HashSet<>();
 }

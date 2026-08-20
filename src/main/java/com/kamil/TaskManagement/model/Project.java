@@ -32,7 +32,7 @@ public class Project {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-
+    @Builder.Default
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
 }
