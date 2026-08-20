@@ -3,7 +3,7 @@ package com.kamil.TaskManagement.service;
 
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
-import com.kamil.TaskManagement.DTO.UpdateProjectRequest;
+
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TagRepository;
@@ -14,7 +14,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,6 @@ public class ProjectService {
                 .description(request.getDescription())
                 .createdAt(request.getCreatedAt())
                 .build();
-        System.out.println(project.getTasks());
         Project addedProject = projectRepository.save(project);
 
 
@@ -51,9 +51,23 @@ public class ProjectService {
 
 
 
-//    public ResponseEntity<ProjectResponse> getProject(Integer id) {
-//
-//    }
+    public ResponseEntity<ProjectResponse> getProject(Integer id) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if (optionalProject.isPresent()) {
+            Project proj = optionalProject.get();
+            return ResponseEntity.ok(
+                    ProjectResponse.builder()
+                            .id(proj.getId())
+                            .name(proj.getName())
+                            .description(proj.getDescription())
+                            .createdAt(proj.getCreatedAt())
+                            .tasks(taskRepository.getTaskNames(proj.getId()))
+                            .build()
+            );
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 //    public ResponseEntity<ProjectResponse> updateProject(UpdateProjectRequest request, Integer id) {
 //
 //    }

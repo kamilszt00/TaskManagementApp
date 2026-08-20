@@ -20,11 +20,11 @@ public class ProjectController {
 
     }
 
-//    @GetMapping("/project/{id}")
-//    public ResponseEntity<ProjectResponse> getTask(@PathVariable Integer id) {
-//        return projectService.getProject(id);
-//
-//    }
+    @GetMapping("/project/{id}")
+    public ResponseEntity<ProjectResponse> getTask(@PathVariable Integer id) {
+        return projectService.getProject(id);
+
+    }
 //
 //    @PutMapping("/project/{id}")
 //    public ResponseEntity<ProjectResponse> putTask(@RequestBody UpdateProjectRequest request, @PathVariable Integer id) {
