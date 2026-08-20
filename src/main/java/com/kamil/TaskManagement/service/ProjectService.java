@@ -89,7 +89,13 @@ public class ProjectService {
             return ResponseEntity.notFound().build();
         }
     }
-//    public ResponseEntity<ProjectResponse> deleteProject(Integer id) {
-//
-//    }
+    public ResponseEntity<ProjectResponse> deleteProject(Integer id) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if (optionalProject.isPresent()) {
+            projectRepository.delete(optionalProject.get());
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

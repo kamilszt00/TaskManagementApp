@@ -31,10 +31,10 @@ public class ProjectController {
         return projectService.updateProject(request, id);
     }
 
-//    @DeleteMapping("/project/{id}")
-//    public ResponseEntity<ProjectResponse> deleteTask(@PathVariable Integer id) {
-//        return projectService.deleteProject(id);
-//    }
+    @DeleteMapping("/project/{id}")
+    public ResponseEntity<ProjectResponse> deleteTask(@PathVariable Integer id) {
+        return projectService.deleteProject(id);
+    }
 
 
 }
