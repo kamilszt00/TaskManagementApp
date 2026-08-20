@@ -11,6 +11,7 @@ import com.kamil.TaskManagement.repository.TagRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -96,6 +97,17 @@ public class TaskService {
 
 
 
+    }
+
+
+    public ResponseEntity<TaskResponse> deleteTask(Integer id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            taskRepository.delete(optionalTask.get());
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
