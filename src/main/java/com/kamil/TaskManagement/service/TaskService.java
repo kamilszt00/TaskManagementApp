@@ -3,6 +3,7 @@ package com.kamil.TaskManagement.service;
 
 import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
+import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
 import com.kamil.TaskManagement.model.Tag;
 import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.repository.ProjectRepository;
@@ -69,7 +70,30 @@ public class TaskService {
         }
 
 
-    public ResponseEntity<TaskResponse> updateTask(CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(UpdateTaskRequest request, Integer id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setTitle(request.getTitle());
+            task.setDueDate(request.getDueDate());
+            task.setStatus(request.getStatus());
+            task.setProject(projectRepository.getReferenceById(request.getProjectID()));
+            task.setUser(userRepository.getReferenceById(request.getAssigneeID()));
+            task.setTags(new HashSet<>(tagRepository.findAllById(request.getTagsID())));
+            taskRepository.save(task);
+            TaskResponse taskUpdatedResponse = TaskResponse.builder()
+                    .id(task.getId())
+                    .title(task.getTitle())
+                    .status(task.getStatus())
+                    .projectID(task.getId())
+                    .assigneeID(task.getUser().getId())
+                    .build();
+
+            return ResponseEntity.ok(taskUpdatedResponse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
 
 
     }

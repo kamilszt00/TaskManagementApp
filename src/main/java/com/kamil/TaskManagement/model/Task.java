@@ -22,6 +22,7 @@ import java.util.Set;
 public class Task {
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Integer id;
     private String status;
     private String title;
@@ -31,7 +32,7 @@ public class Task {
     @JoinTable(name = "TASK_TAG_LINK",joinColumns = @JoinColumn(name="task_id"),inverseJoinColumns = @JoinColumn(name="tag_id"))
     private Set<Tag> tags = new HashSet<>();
 
-    @Column(nullable = false)
+    @Column(nullable = false,updatable = false)
     private LocalDateTime dueDate;
 
     @ManyToOne
