@@ -21,6 +21,7 @@ public class Project {
 
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Integer id;
 
     @Column(length = 35)

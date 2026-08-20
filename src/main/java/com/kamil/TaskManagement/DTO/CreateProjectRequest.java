@@ -13,11 +13,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-
-
 public class CreateProjectRequest {
     private String name;
     private String description;
     private LocalDateTime createdAt;
+
+
 }

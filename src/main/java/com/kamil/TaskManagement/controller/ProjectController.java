@@ -25,12 +25,12 @@ public class ProjectController {
         return projectService.getProject(id);
 
     }
-//
-//    @PutMapping("/project/{id}")
-//    public ResponseEntity<ProjectResponse> putTask(@RequestBody UpdateProjectRequest request, @PathVariable Integer id) {
-//        return projectService.updateProject(request, id);
-//    }
-//
+
+    @PutMapping("/project/{id}")
+    public ResponseEntity<ProjectResponse> putTask(@RequestBody UpdateProjectRequest request, @PathVariable Integer id) {
+        return projectService.updateProject(request, id);
+    }
+
 //    @DeleteMapping("/project/{id}")
 //    public ResponseEntity<ProjectResponse> deleteTask(@PathVariable Integer id) {
 //        return projectService.deleteProject(id);

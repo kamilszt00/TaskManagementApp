@@ -4,6 +4,7 @@ package com.kamil.TaskManagement.service;
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 
+import com.kamil.TaskManagement.DTO.UpdateProjectRequest;
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TagRepository;
@@ -68,9 +69,26 @@ public class ProjectService {
             return ResponseEntity.notFound().build();
         }
     }
-//    public ResponseEntity<ProjectResponse> updateProject(UpdateProjectRequest request, Integer id) {
-//
-//    }
+    public ResponseEntity<ProjectResponse> updateProject(UpdateProjectRequest request, Integer id) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if (optionalProject.isPresent()) {
+            Project project = optionalProject.get();
+            project.setName(request.getName());
+            project.setDescription(request.getDescription());
+            project.setCreatedAt(request.getCreatedAt());
+            projectRepository.save(project);
+
+            return ResponseEntity.ok(ProjectResponse.builder()
+                    .id(project.getId())
+                    .name(project.getName())
+                    .description(project.getDescription())
+                    .createdAt(project.getCreatedAt())
+                    .tasks(taskRepository.getTaskNames(project.getId()))
+                    .build());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 //    public ResponseEntity<ProjectResponse> deleteProject(Integer id) {
 //
 //    }
