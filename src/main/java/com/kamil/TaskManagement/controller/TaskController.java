@@ -20,11 +20,7 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
-        TaskResponse taskResponse = taskService.createTask(request);
-            return ResponseEntity
-                    .status(HttpStatusCode.valueOf(201))
-                    .body(taskResponse);
-
+        return taskService.createTask(request);
     }
 
     @GetMapping("/tasks/{id}")

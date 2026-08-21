@@ -29,7 +29,7 @@ public class TaskService {
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
 
-    public TaskResponse createTask(CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> createTask(CreateTaskRequest request) {
         Task task = Task.builder()
                 .id(null)
                 .status(request.getStatus())
@@ -43,13 +43,16 @@ public class TaskService {
         Task createdTask = taskRepository.save(task);
 
 
-        return TaskResponse.builder()
+        TaskResponse taskResponse = TaskResponse.builder()
                 .id(createdTask.getId())
                 .title(createdTask.getTitle())
                 .status(createdTask.getStatus())
                 .projectID(createdTask.getId())
                 .assigneeID(createdTask.getUser().getId())
                 .build();
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(201))
+                .body(taskResponse);
     }
 
 
