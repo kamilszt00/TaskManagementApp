@@ -1,25 +1,42 @@
 package com.kamil.TaskManagement.controller;
 
 
+import com.kamil.TaskManagement.DTO.CreateUserRequest;
+import com.kamil.TaskManagement.DTO.UserResponse;
 import com.kamil.TaskManagement.model.User;
 import com.kamil.TaskManagement.repository.UserRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.kamil.TaskManagement.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserService userService;
+
+
+    @PostMapping("/user")
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+        return userService.createUser(request);
     }
 
-    @GetMapping("/users")
-    public List<User> viewUsers(@RequestParam int id_before,@RequestParam int id_after) {
-        return userRepository.findAllByIdBetween(id_before,id_after);
-    }
+
+//    @GetMapping
+//
+//
+//
+//    @PutMapping
+//
+//
+//    @DeleteMapping
+
+
+
+
+
 
 }

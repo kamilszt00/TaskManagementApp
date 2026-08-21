@@ -5,18 +5,17 @@ import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
 import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
 import com.kamil.TaskManagement.service.TaskService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
-      this.taskService = taskService;
-    }
 
 
     @PostMapping("/tasks")
