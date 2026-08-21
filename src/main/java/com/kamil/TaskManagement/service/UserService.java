@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -69,6 +68,32 @@ public class UserService {
         } else {
             return ResponseEntity.notFound().build();
 
+        }
+
+
+
+
+    }
+
+    public ResponseEntity<UserResponse> updateUser(CreateUserRequest userRequest, Integer id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setRole(userRequest.getUserRole());
+            user.setEmail(userRequest.getUserEmail());
+            user.setUsername(userRequest.getUserName());
+            userRepository.save(user);
+
+
+            return  ResponseEntity.ok( UserResponse.builder()
+                    .id(user.getId())
+                    .userName(user.getUsername())
+                    .userRole(user.getRole())
+                    .userEmail(user.getEmail())
+                    .userTasks(taskRepository.getTaskNamesFromUser(user.getId()))
+                    .build());
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }
