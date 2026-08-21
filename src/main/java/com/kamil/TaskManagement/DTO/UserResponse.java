@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -18,7 +19,7 @@ public class UserResponse {
     String userName;
     String userRole;
     String userEmail;
-    Set<Task> userTasks;
+    List<String> userTasks;
 
 
 }

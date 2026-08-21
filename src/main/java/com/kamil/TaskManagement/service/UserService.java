@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class UserService {
                 .userName(user.getUsername())
                 .userRole(user.getRole())
                 .userEmail(user.getEmail())
-                .userTasks(new HashSet<>(user.getTasks()))
+                .userTasks(taskRepository.getTaskNamesFromUser(user.getId()))
                 .build();
 
         return ResponseEntity
@@ -49,5 +50,25 @@ public class UserService {
 
 
 
+    }
+
+    public ResponseEntity<UserResponse> getUser(Integer id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return ResponseEntity.ok(
+                            UserResponse.builder()
+                            .id(user.getId())
+                            .userName(user.getUsername())
+                            .userRole(user.getRole())
+                            .userEmail(user.getEmail())
+                            .userTasks(taskRepository.getTaskNamesFromUser(user.getId()))
+                            .build()
+            );
+        } else {
+            return ResponseEntity.notFound().build();
+
+        }
     }
 }

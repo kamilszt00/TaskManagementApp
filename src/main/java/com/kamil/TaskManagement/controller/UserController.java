@@ -25,10 +25,12 @@ public class UserController {
     }
 
 
-//    @GetMapping
-//
-//
-//
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable Integer id) {
+        return userService.getUser(id);
+    }
+
+
 //    @PutMapping
 //
 //

@@ -15,6 +15,10 @@ public interface TaskRepository extends JpaRepository<Task,Integer> {
     List<String> getTaskNames(@Param("project_id") Integer id);
 
 
+    @Query(value = "SELECT title FROM task_api_db.tasks_tbl WHERE user_id = :user_id",nativeQuery = true)
+    List<String> getTaskNamesFromUser(@Param("user_id") Integer id);
+
+
 
 
 
