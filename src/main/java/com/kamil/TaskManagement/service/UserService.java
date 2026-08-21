@@ -96,4 +96,14 @@ public class UserService {
             return ResponseEntity.notFound().build();
         }
     }
+
+    public ResponseEntity<UserResponse> deleteUser(Integer id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.delete(optionalUser.get());
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
