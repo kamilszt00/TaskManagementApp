@@ -4,20 +4,15 @@ package com.kamil.TaskManagement.service;
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 
-import com.kamil.TaskManagement.DTO.UpdateProjectRequest;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.repository.ProjectRepository;
-import com.kamil.TaskManagement.repository.TagRepository;
-import com.kamil.TaskManagement.repository.TaskRepository;
-import com.kamil.TaskManagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service

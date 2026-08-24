@@ -5,15 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.ResponseEntity;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CreateUserRequest {
-    String userName;
-    String userEmail;
-    String userRole;
+    private String username;
+    private String email;
+    private String role;
 
 }
