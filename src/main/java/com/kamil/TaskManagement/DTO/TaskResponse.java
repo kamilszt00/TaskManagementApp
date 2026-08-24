@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -20,6 +22,6 @@ public class TaskResponse {
     private String status;
     private Integer projectID;
     private Integer assigneeID;
-
+    private Set<Integer> tagsID;
 
 }
