@@ -6,6 +6,7 @@ import com.kamil.TaskManagement.DTO.UserResponse;
 import com.kamil.TaskManagement.model.User;
 import com.kamil.TaskManagement.repository.UserRepository;
 import com.kamil.TaskManagement.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
 
 
     @PostMapping("/user")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         return userService.createUser(request);
     }
 
@@ -32,7 +33,7 @@ public class UserController {
 
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody CreateUserRequest userRequest,@PathVariable Integer id) {
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody CreateUserRequest userRequest,@PathVariable Integer id) {
         return userService.updateUser(userRequest,id);
     }
 

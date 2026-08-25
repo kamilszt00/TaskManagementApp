@@ -1,6 +1,7 @@
 package com.kamil.TaskManagement.DTO;
 
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +17,20 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class CreateTaskRequest {
+    @NotBlank(message = "Task title should not be empty")
     private String title;
+    @NotBlank(message = "Task status should not be empty")
     private String status;
+    @FutureOrPresent
+    @NotNull
     private LocalDateTime DueDate;
+    @NotNull
+    @Positive
     private Integer projectID;
+    @Positive
+    @NotNull
     private Integer assigneeID;
+    @Size(min = 1)
     private Set<Integer> tagsID;
 
 

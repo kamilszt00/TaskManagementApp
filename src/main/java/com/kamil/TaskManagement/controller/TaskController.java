@@ -4,6 +4,7 @@ package com.kamil.TaskManagement.controller;
 import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
 import com.kamil.TaskManagement.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class TaskController {
 
 
     @PostMapping("/task")
-    public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody CreateTaskRequest request) {
         return taskService.createTask(request);
     }
 
@@ -28,7 +29,7 @@ public class TaskController {
     }
 
     @PutMapping("/task/{id}")
-    public ResponseEntity<TaskResponse> putTask(@RequestBody CreateTaskRequest request, @PathVariable Integer id) {
+    public ResponseEntity<TaskResponse> putTask(@Valid @RequestBody CreateTaskRequest request, @PathVariable Integer id) {
         return taskService.updateTask(request, id);
     }
 

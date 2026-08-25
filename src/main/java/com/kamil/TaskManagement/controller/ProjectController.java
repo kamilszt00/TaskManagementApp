@@ -3,6 +3,7 @@ package com.kamil.TaskManagement.controller;
 
 import com.kamil.TaskManagement.DTO.*;
 import com.kamil.TaskManagement.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping("/project")
-    public ResponseEntity<ProjectResponse> createProject(@RequestBody CreateProjectRequest request) {
+    public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody CreateProjectRequest request) {
         return projectService.createProject(request);
 
     }
@@ -25,7 +26,7 @@ public class ProjectController {
     }
 
     @PutMapping("/project/{id}")
-    public ResponseEntity<ProjectResponse> putProject(@RequestBody CreateProjectRequest request, @PathVariable Integer id) {
+    public ResponseEntity<ProjectResponse> putProject(@Valid @RequestBody CreateProjectRequest request, @PathVariable Integer id) {
         return projectService.updateProject(request, id);
     }
 
