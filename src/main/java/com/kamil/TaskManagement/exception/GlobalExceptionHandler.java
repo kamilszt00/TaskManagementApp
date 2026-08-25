@@ -37,4 +37,14 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> genericHandler(Exception ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message("An unexpected Error occured")
+                .status(500)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }
