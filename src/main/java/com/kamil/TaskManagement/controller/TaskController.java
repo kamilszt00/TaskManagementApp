@@ -16,12 +16,12 @@ public class TaskController {
 
 
 
-    @PostMapping("/tasks")
+    @PostMapping("/task")
     public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
         return taskService.createTask(request);
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/task/{id}")
     public ResponseEntity<TaskResponse> getTask(@PathVariable Integer id) {
         return taskService.getTask(id);
 

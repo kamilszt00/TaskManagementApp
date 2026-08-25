@@ -35,7 +35,6 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = userMapper.toRequest(userRequest);
-            user.setId(optionalUser.get().getId());
             return  ResponseEntity.ok(userMapper.toResponse(userRepository.save(user)));
         } else {
             return ResponseEntity.notFound().build();

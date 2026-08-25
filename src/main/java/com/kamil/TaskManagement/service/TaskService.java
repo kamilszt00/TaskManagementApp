@@ -9,6 +9,7 @@ import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TagRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -35,46 +36,24 @@ public class TaskService {
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(201))
                 .body(taskMapper.toResponse(taskRepository.save(task)));
-
     }
-
-
     public ResponseEntity<TaskResponse> getTask(Integer id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        return optionalTask.map(task -> ResponseEntity.ok(taskMapper.toResponse(task))).orElseGet(() -> ResponseEntity.notFound().build());
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        return ResponseEntity.ok(taskMapper.toResponse(task));
         }
-
-
     public ResponseEntity<TaskResponse> updateTask(CreateTaskRequest request, Integer id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (optionalTask.isPresent()) {
-            Task task = optionalTask.get();
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(("Task not found")));
             task.setTitle(request.getTitle());
             task.setStatus(request.getStatus());
             task.setProject(projectRepository.getReferenceById(request.getProjectID()));
             task.setUser(userRepository.getReferenceById(request.getAssigneeID()));
             task.setTags(new HashSet<>(tagRepository.findAllById(request.getTagsID())));
             return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
     }
-
-
     public ResponseEntity<TaskResponse> deleteTask(Integer id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (optionalTask.isPresent()) {
-            taskRepository.delete(optionalTask.get());
+        taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
-
-
-
-
-
-
 }
