@@ -7,6 +7,7 @@ import com.kamil.TaskManagement.mapper.UserMapper;
 import com.kamil.TaskManagement.model.User;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -27,27 +28,23 @@ public class UserService {
     }
 
     public ResponseEntity<UserResponse> getUser(Integer id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.map(user -> ResponseEntity.ok(userMapper.toResponse(user))).orElseGet(() -> ResponseEntity.notFound().build());
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     public ResponseEntity<UserResponse> updateUser(CreateUserRequest userRequest, Integer id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
+        User userToUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
             User user = userMapper.toRequest(userRequest);
+            user.setId(userToUpdate.getId());
             return  ResponseEntity.ok(userMapper.toResponse(userRepository.save(user)));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     public ResponseEntity<UserResponse> deleteUser(Integer id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            userRepository.delete(optionalUser.get());
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            userRepository.delete(user);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 }
