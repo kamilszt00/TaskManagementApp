@@ -7,13 +7,12 @@ import com.kamil.TaskManagement.DTO.ProjectResponse;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.repository.ProjectRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,31 +29,23 @@ public class ProjectService {
                 .status(HttpStatusCode.valueOf(201))
                 .body(projectResponse);
     }
-
-
-
     public ResponseEntity<ProjectResponse> getProject(Integer id) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-        return optionalProject.map(project -> ResponseEntity.ok(projectMapper.toResponse(project))).orElseGet(() -> ResponseEntity.notFound().build());
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        return ResponseEntity.ok(projectMapper.toResponse(project));
     }
 
     public ResponseEntity<ProjectResponse> updateProject(CreateProjectRequest request, Integer id) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-        if (optionalProject.isPresent()) {
+            Project projectToUpdate = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
             Project project = projectMapper.toRequest(request);
-            project.setId(optionalProject.get().getId());
+            project.setId(projectToUpdate.getId());
             return ResponseEntity.ok(projectMapper.toResponse(projectRepository.save(project)));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
     public ResponseEntity<ProjectResponse> deleteProject(Integer id) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-        if (optionalProject.isPresent()) {
-            projectRepository.delete(optionalProject.get());
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+            projectRepository.delete(project);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 }
