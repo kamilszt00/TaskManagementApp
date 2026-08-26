@@ -30,7 +30,6 @@ public class TaskService {
 
     public ResponseEntity<TaskResponse> createTask(CreateTaskRequest request) {
         Task task = taskMapper.toRequest(request);
-        //other exception handler
         task.setTags(new HashSet<>(tagRepository.findAllById(request.getTagsID())));
         task.setProject(projectRepository.getReferenceById(request.getProjectID()));
         task.setUser(userRepository.getReferenceById(request.getAssigneeID()));
