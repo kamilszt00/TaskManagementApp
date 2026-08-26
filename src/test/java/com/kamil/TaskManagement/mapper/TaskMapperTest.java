@@ -13,12 +13,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class TaskMapperTest {
     private final TaskMapper mapper = Mappers.getMapper(TaskMapper.class);
-
-
-
     @Test
     public void shouldMapTaskDtoToTask() {
         CreateTaskRequest dto = CreateTaskRequest.builder()
+
                 .title("The title")
                 .status("TODO")
                 .dueDate(LocalDateTime.now().plusDays(33))

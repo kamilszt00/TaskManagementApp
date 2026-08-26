@@ -14,6 +14,7 @@ public interface TaskMapper {
     @Mapping(target = "projectID", source = "project.id")
     @Mapping(target = "assigneeID", source = "user.id")
     @Mapping(target = "tagsID", source = "tags")
+    @Mapping(target="dueDate", source = "dueDate")
     TaskResponse toResponse(Task task);
 
 

@@ -23,7 +23,7 @@ public class CreateTaskRequest {
     private String status;
     @FutureOrPresent
     @NotNull
-    private LocalDateTime DueDate;
+    private LocalDateTime dueDate;
     @NotNull
     @Positive
     private Integer projectID;
