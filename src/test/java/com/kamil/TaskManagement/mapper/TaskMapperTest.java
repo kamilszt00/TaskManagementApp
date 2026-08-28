@@ -5,8 +5,7 @@ import com.kamil.TaskManagement.model.Task;
 import org.mapstruct.factory.Mappers;
 import org.junit.jupiter.api.*;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
+
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
