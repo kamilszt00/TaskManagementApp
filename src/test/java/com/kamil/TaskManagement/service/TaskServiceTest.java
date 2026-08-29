@@ -74,70 +74,70 @@ class TaskServiceTest {
 
     @Test
     public void shouldCompleteTaskSuccessfully() {
-        Integer id = 1;
-        Tag tag1 = new Tag(); tag1.setId(1);
-        Tag tag2 = new Tag(); tag2.setId(2);
-        Tag tag3 = new Tag(); tag3.setId(3);
-        Project project = new Project(); project.setId(1);
-        User user = new User(); user.setId(1);
-        Task task = Task.builder()
-                .id(1)
-                .status(TaskStatus.IN_PROGRESS)
-                .title("The title")
-                .tags(new HashSet<>(Arrays.asList(tag1,tag2,tag3)))
-                .dueDate(LocalDateTime.now().plusDays(33))
-                .project(project)
-                .user(user)
-                .build();
-        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Task task = createMockTask(TaskStatus.IN_PROGRESS);
+        Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
         Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        ResponseEntity<TaskResponse> taskResponse = taskService.completeTask(id);
+        ResponseEntity<TaskResponse> taskResponse = taskService.completeTask(task.getId());
 
         assertThat(taskResponse.getBody().getStatus()).isEqualTo(TaskStatus.COMPLETED.name());
     }
     @Test
     public void shouldThrowWhenCompletingTodoTask() {
-        Integer id = 1;
-        Tag tag1 = new Tag(); tag1.setId(1);
-        Tag tag2 = new Tag(); tag2.setId(2);
-        Tag tag3 = new Tag(); tag3.setId(3);
-        Project project = new Project(); project.setId(1);
-        User user = new User(); user.setId(1);
-        Task task = Task.builder()
-                .id(1)
-                .status(TaskStatus.TODO)
-                .title("The title")
-                .tags(new HashSet<>(Arrays.asList(tag1,tag2,tag3)))
-                .dueDate(LocalDateTime.now().plusDays(33))
-                .project(project)
-                .user(user)
-                .build();
-        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
-        assertThatThrownBy(() -> taskService.completeTask(id))
+        Task task = createMockTask(TaskStatus.TODO);
+        Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        assertThatThrownBy(() -> taskService.completeTask(task.getId()))
                 .isInstanceOf(InvalidTaskStateException.class);
     }
 
     @Test
     public void shouldThrowWhenCompletingCompletedTask() {
-        Integer id = 1;
+        Task task = createMockTask(TaskStatus.COMPLETED);
+        Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        assertThatThrownBy(() -> taskService.completeTask(task.getId()))
+                .isInstanceOf(InvalidTaskStateException.class);
+
+    }
+
+    @Test
+    public void shouldStartTaskSuccessfully() {
+        Task task = createMockTask(TaskStatus.TODO);
+        Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<TaskResponse> taskResponse = taskService.startTask(task.getId());
+
+        assertThat(taskResponse.getBody().getStatus()).isEqualTo(TaskStatus.IN_PROGRESS.name());
+    }
+    @Test
+    public void shouldThrowWhenStartingInProgressTask() {
+        Task task = createMockTask(TaskStatus.IN_PROGRESS);
+        Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        assertThatThrownBy(() -> taskService.startTask(task.getId()))
+                .isInstanceOf(InvalidTaskStateException.class);
+    }
+    @Test
+    public void shouldThrowWhenStaringCompletedTask() {
+        Task task = createMockTask(TaskStatus.COMPLETED);
+        Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        assertThatThrownBy(() -> taskService.startTask(task.getId()))
+                .isInstanceOf(InvalidTaskStateException.class);
+    }
+
+
+    private static Task createMockTask(TaskStatus taskStatus) {
         Tag tag1 = new Tag(); tag1.setId(1);
         Tag tag2 = new Tag(); tag2.setId(2);
         Tag tag3 = new Tag(); tag3.setId(3);
         Project project = new Project(); project.setId(1);
         User user = new User(); user.setId(1);
-        Task task = Task.builder()
+        return Task.builder()
                 .id(1)
-                .status(TaskStatus.COMPLETED)
+                .status(taskStatus)
                 .title("The title")
                 .tags(new HashSet<>(Arrays.asList(tag1,tag2,tag3)))
                 .dueDate(LocalDateTime.now().plusDays(33))
                 .project(project)
                 .user(user)
                 .build();
-        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
-        assertThatThrownBy(() -> taskService.completeTask(id))
-                .isInstanceOf(InvalidTaskStateException.class);
-
     }
 
 }
