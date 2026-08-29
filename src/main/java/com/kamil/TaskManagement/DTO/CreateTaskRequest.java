@@ -20,6 +20,7 @@ public class CreateTaskRequest {
     @NotBlank(message = "Task title should not be empty")
     private String title;
     @NotBlank(message = "Task status should not be empty")
+    @Pattern(regexp = "TODO|IN_PROGRESS|COMPLETED", message = "Pick from TODO,IN_PROGRESS,COMPLETED")
     private String status;
     @FutureOrPresent
     @NotNull

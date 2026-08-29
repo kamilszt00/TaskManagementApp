@@ -3,6 +3,7 @@ package com.kamil.TaskManagement.controller;
 
 import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
+import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
 import com.kamil.TaskManagement.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class TaskController {
     }
 
     @PutMapping("/task/{id}")
-    public ResponseEntity<TaskResponse> putTask(@Valid @RequestBody CreateTaskRequest request, @PathVariable Integer id) {
+    public ResponseEntity<TaskResponse> putTask(@Valid @RequestBody UpdateTaskRequest request, @PathVariable Integer id) {
         return taskService.updateTask(request, id);
     }
 

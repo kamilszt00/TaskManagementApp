@@ -3,8 +3,10 @@ package com.kamil.TaskManagement.service;
 
 import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
+import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
 import com.kamil.TaskManagement.mapper.TaskMapper;
 import com.kamil.TaskManagement.model.Task;
+import com.kamil.TaskManagement.model.TaskStatus;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TagRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
@@ -42,18 +44,19 @@ public class TaskService {
                 .orElseThrow(() -> new EntityNotFoundException(("Task not found")));
         return ResponseEntity.ok(taskMapper.toResponse(task));
         }
-    public ResponseEntity<TaskResponse> updateTask(CreateTaskRequest request, Integer id) {
+    public ResponseEntity<TaskResponse> updateTask(UpdateTaskRequest request, Integer id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(("Task not found")));
-            task.setTitle(request.getTitle());
-            task.setStatus(request.getStatus());
-            task.setProject(projectRepository.getReferenceById(request.getProjectID()));
-            task.setUser(userRepository.getReferenceById(request.getAssigneeID()));
-            task.setTags(new HashSet<>(tagRepository.findAllById(request.getTagsID())));
-            return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
+        task.setTitle(request.getTitle());
+        task.setStatus(TaskStatus.valueOf(request.getStatus()));
+        task.setProject(projectRepository.getReferenceById(request.getProjectID()));
+        task.setUser(userRepository.getReferenceById(request.getAssigneeID()));
+        task.setTags(new HashSet<>(tagRepository.findAllById(request.getTagsID())));
+        return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
     }
     public ResponseEntity<TaskResponse> deleteTask(Integer id) {
-        taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        taskRepository.delete(task);
             return ResponseEntity.noContent().build();
     }
 }

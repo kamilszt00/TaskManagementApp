@@ -22,7 +22,10 @@ public class Task {
     @GeneratedValue
     @Column(updatable = false)
     private Integer id;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
     private String title;
 
 
