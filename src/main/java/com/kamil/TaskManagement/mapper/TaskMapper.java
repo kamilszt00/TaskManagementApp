@@ -8,6 +8,8 @@ import com.kamil.TaskManagement.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
 
@@ -19,6 +21,8 @@ public interface TaskMapper {
 
 
     Task toRequest(CreateTaskRequest request);
+
+    List<TaskResponse> toResponseList(List<Task> tasks);
 
     default Integer tagToId(Tag tag) {
         return tag.getId();

@@ -19,8 +19,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -79,5 +79,11 @@ public class TaskService {
         }
         task.setStatus(TaskStatus.COMPLETED);
         return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
+    }
+
+    public ResponseEntity<List<TaskResponse>> getOverdueTask() {
+        List<Task> overDueTasks = taskRepository.findOverdueTasks(LocalDateTime.now().minusDays(1),Arrays.asList(TaskStatus.TODO,TaskStatus.IN_PROGRESS));
+        List<TaskResponse> taskResponses = taskMapper.toResponseList(overDueTasks);
+        return ResponseEntity.ok(taskResponses);
     }
 }

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class TaskController {
@@ -44,9 +46,8 @@ public class TaskController {
 
     @PatchMapping("task/{id}/complete")
     public ResponseEntity<TaskResponse> completeTask(@PathVariable Integer id) {return taskService.completeTask(id);}
-
-
-
+    @GetMapping("task/overdue")
+    public ResponseEntity<List<TaskResponse>> getOverdueTask() {return taskService.getOverdueTask();}
 
 
 
