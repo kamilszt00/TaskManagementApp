@@ -39,6 +39,9 @@ public class TaskController {
         return taskService.deleteTask(id);
     }
 
+    @PatchMapping("task/{id}/start")
+    public ResponseEntity<TaskResponse> startTask(@PathVariable Integer id) {return taskService.startTask(id);}
+
 
 
 

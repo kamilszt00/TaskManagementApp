@@ -65,4 +65,13 @@ public class GlobalExceptionHandler {
                 });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(InvalidTaskStateException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTaskStateException(InvalidTaskStateException invalidTaskStateException) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(invalidTaskStateException.getMessage())
+                .status(HttpStatus.CONFLICT.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }

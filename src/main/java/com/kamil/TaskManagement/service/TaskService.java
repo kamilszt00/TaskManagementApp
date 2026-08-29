@@ -4,6 +4,7 @@ package com.kamil.TaskManagement.service;
 import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
 import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
+import com.kamil.TaskManagement.exception.InvalidTaskStateException;
 import com.kamil.TaskManagement.mapper.TaskMapper;
 import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.model.TaskStatus;
@@ -13,6 +14,7 @@ import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -58,5 +60,14 @@ public class TaskService {
         Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
         taskRepository.delete(task);
             return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<TaskResponse> startTask(Integer id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        if (task.getStatus() != TaskStatus.TODO) {
+            throw new InvalidTaskStateException("You cannot start a task that is %s".formatted(task.getStatus().name().toLowerCase()));
+        }
+        task.setStatus(TaskStatus.IN_PROGRESS);
+        return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
     }
 }
