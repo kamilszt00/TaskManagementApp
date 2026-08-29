@@ -2,15 +2,14 @@ package com.kamil.TaskManagement.service;
 
 import com.kamil.TaskManagement.DTO.CreateTaskRequest;
 import com.kamil.TaskManagement.DTO.TaskResponse;
+import com.kamil.TaskManagement.exception.InvalidTaskStateException;
 import com.kamil.TaskManagement.mapper.TaskMapper;
-import com.kamil.TaskManagement.model.Project;
-import com.kamil.TaskManagement.model.Tag;
-import com.kamil.TaskManagement.model.Task;
-import com.kamil.TaskManagement.model.User;
+import com.kamil.TaskManagement.model.*;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TagRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -20,8 +19,10 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
@@ -71,5 +72,72 @@ class TaskServiceTest {
                 .isEqualTo(taskResponse.getBody());
     }
 
+    @Test
+    public void shouldCompleteTaskSuccessfully() {
+        Integer id = 1;
+        Tag tag1 = new Tag(); tag1.setId(1);
+        Tag tag2 = new Tag(); tag2.setId(2);
+        Tag tag3 = new Tag(); tag3.setId(3);
+        Project project = new Project(); project.setId(1);
+        User user = new User(); user.setId(1);
+        Task task = Task.builder()
+                .id(1)
+                .status(TaskStatus.IN_PROGRESS)
+                .title("The title")
+                .tags(new HashSet<>(Arrays.asList(tag1,tag2,tag3)))
+                .dueDate(LocalDateTime.now().plusDays(33))
+                .project(project)
+                .user(user)
+                .build();
+        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<TaskResponse> taskResponse = taskService.completeTask(id);
+
+        assertThat(taskResponse.getBody().getStatus()).isEqualTo(TaskStatus.COMPLETED.name());
+    }
+    @Test
+    public void shouldThrowWhenCompletingTodoTask() {
+        Integer id = 1;
+        Tag tag1 = new Tag(); tag1.setId(1);
+        Tag tag2 = new Tag(); tag2.setId(2);
+        Tag tag3 = new Tag(); tag3.setId(3);
+        Project project = new Project(); project.setId(1);
+        User user = new User(); user.setId(1);
+        Task task = Task.builder()
+                .id(1)
+                .status(TaskStatus.TODO)
+                .title("The title")
+                .tags(new HashSet<>(Arrays.asList(tag1,tag2,tag3)))
+                .dueDate(LocalDateTime.now().plusDays(33))
+                .project(project)
+                .user(user)
+                .build();
+        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        assertThatThrownBy(() -> taskService.completeTask(id))
+                .isInstanceOf(InvalidTaskStateException.class);
+    }
+
+    @Test
+    public void shouldThrowWhenCompletingCompletedTask() {
+        Integer id = 1;
+        Tag tag1 = new Tag(); tag1.setId(1);
+        Tag tag2 = new Tag(); tag2.setId(2);
+        Tag tag3 = new Tag(); tag3.setId(3);
+        Project project = new Project(); project.setId(1);
+        User user = new User(); user.setId(1);
+        Task task = Task.builder()
+                .id(1)
+                .status(TaskStatus.COMPLETED)
+                .title("The title")
+                .tags(new HashSet<>(Arrays.asList(tag1,tag2,tag3)))
+                .dueDate(LocalDateTime.now().plusDays(33))
+                .project(project)
+                .user(user)
+                .build();
+        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        assertThatThrownBy(() -> taskService.completeTask(id))
+                .isInstanceOf(InvalidTaskStateException.class);
+
+    }
 
 }
