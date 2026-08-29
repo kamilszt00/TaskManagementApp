@@ -70,4 +70,14 @@ public class TaskService {
         task.setStatus(TaskStatus.IN_PROGRESS);
         return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
     }
+
+    public ResponseEntity<TaskResponse> completeTask(Integer id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        switch (task.getStatus()) {
+            case TODO -> throw new InvalidTaskStateException("You cannot complete a task that is not started yet") ;
+            case COMPLETED -> throw new InvalidTaskStateException("You cannot complete a completed task");
+        }
+        task.setStatus(TaskStatus.COMPLETED);
+        return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
+    }
 }

@@ -42,6 +42,8 @@ public class TaskController {
     @PatchMapping("task/{id}/start")
     public ResponseEntity<TaskResponse> startTask(@PathVariable Integer id) {return taskService.startTask(id);}
 
+    @PatchMapping("task/{id}/complete")
+    public ResponseEntity<TaskResponse> completeTask(@PathVariable Integer id) {return taskService.completeTask(id);}
 
 
 
