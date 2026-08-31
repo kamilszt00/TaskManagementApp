@@ -87,7 +87,6 @@ class TaskServiceTest {
             Mockito.when(userRepository.getReferenceById(request.getAssigneeID())).thenReturn(user);
             Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
             ResponseEntity<TaskResponse> taskResponse = taskService.createTask(request);
-            //Then
             assertThat(request)
                     .usingRecursiveComparison()
                     .ignoringFields("id")
@@ -184,9 +183,10 @@ class TaskServiceTest {
         }
     }
     @Nested
-    @DisplayName("Should return overDue tasks successfully")
+    @DisplayName("Return overdue tasks test")
     class GetOverDueTasksTests {
         @Test
+        @DisplayName("Should return overDue tasks successfully")
         public void shouldGetOverDueTasksSuccessfully() {
             List<Task> overDueTasks = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
@@ -212,6 +212,44 @@ class TaskServiceTest {
             ResponseEntity<List<TaskResponse>> response = taskService.getOverdueTask();
 
             assertThat(response.getBody()).hasSize(3);
+        }
+    }
+
+    @Nested
+    @DisplayName("Reassign Task tests")
+    class reassignTaskTests {
+        @Test
+        @DisplayName("Should reassign task test if Different user and Task NOT completed")
+        public void shouldReassignTaskSuccessfully() {
+            User userToReassign = new User(); userToReassign.setId(2);
+            task.setStatus(TaskStatus.TODO);
+            Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+            Mockito.when(userRepository.getReferenceById(userToReassign.getId())).thenReturn(userToReassign);
+            Mockito.when(taskRepository.save(task)).thenAnswer(invocation -> invocation.getArgument(0));
+            ResponseEntity<TaskResponse> taskResponse = taskService.reassignTask(task.getId(),userToReassign.getId());
+            assert taskResponse.getBody() != null;
+            assertThat(taskResponse.getBody().getAssigneeID()).isEqualTo(userToReassign.getId());
+            Mockito.verify(TaskServiceTest.this.taskRepository,Mockito.times(1)).save(task);
+        }
+        @Test
+        @DisplayName("Should throw InvalidTaskStateException if trying to reassign to the same user")
+        public void shouldThrowWhenReassigningSameUser() {
+            task.setStatus(TaskStatus.TODO);
+            Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+            Mockito.when(userRepository.getReferenceById(user.getId())).thenReturn(user);
+            assertThatThrownBy(() -> taskService.reassignTask(task.getId(),user.getId())).isInstanceOf(InvalidTaskStateException.class);
+            Mockito.verify(TaskServiceTest.this.taskRepository,Mockito.never()).save(task);
+        }
+        @Test
+        @DisplayName("Should throw InvalidTaskStateException if trying to reassign completed task")
+        public void shouldThrowWhenReassignCompletedTask() {
+            User userToReassign = new User(); userToReassign.setId(2);
+            task.setStatus(TaskStatus.COMPLETED);
+            Mockito.when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+            Mockito.when(userRepository.getReferenceById(userToReassign.getId())).thenReturn(userToReassign);
+            assertThatThrownBy(() -> taskService.reassignTask(task.getId(),userToReassign.getId())).isInstanceOf(InvalidTaskStateException.class);
+            Mockito.verify(TaskServiceTest.this.taskRepository,Mockito.never()).save(task);
+
         }
     }
 

@@ -7,6 +7,7 @@ import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
 import com.kamil.TaskManagement.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,11 @@ public class TaskController {
     public ResponseEntity<TaskResponse> completeTask(@PathVariable Integer id) {return taskService.completeTask(id);}
     @GetMapping("task/overdue")
     public ResponseEntity<List<TaskResponse>> getOverdueTask() {return taskService.getOverdueTask();}
+
+    @PatchMapping("task/{id}/reassign")
+    public ResponseEntity<TaskResponse> reassignTask(@PathVariable Integer id, @RequestParam Integer userId) {
+        return taskService.reassignTask(id, userId);
+    }
 
 
 

@@ -8,6 +8,7 @@ import com.kamil.TaskManagement.exception.InvalidTaskStateException;
 import com.kamil.TaskManagement.mapper.TaskMapper;
 import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.model.TaskStatus;
+import com.kamil.TaskManagement.model.User;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TagRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
@@ -85,5 +86,17 @@ public class TaskService {
         List<Task> overDueTasks = taskRepository.findOverdueTasks(LocalDateTime.now().minusDays(1),Arrays.asList(TaskStatus.TODO,TaskStatus.IN_PROGRESS));
         List<TaskResponse> taskResponses = taskMapper.toResponseList(overDueTasks);
         return ResponseEntity.ok(taskResponses);
+    }
+
+    public ResponseEntity<TaskResponse> reassignTask(Integer taskId,Integer userId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        User user = userRepository.getReferenceById(userId);
+        if (user.getId().equals(task.getUser().getId())) {
+            throw new InvalidTaskStateException("You cannot reassign the task to the same user");
+        } else if (task.getStatus() == TaskStatus.COMPLETED) {
+            throw new InvalidTaskStateException("You cannot reassign the task that is completed");
+        }
+        task.setUser(user);
+        return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
     }
 }
