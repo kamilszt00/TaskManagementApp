@@ -1,5 +1,6 @@
 package com.kamil.TaskManagement.repository;
 
+import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.model.Tag;
 import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.model.TaskStatus;
@@ -23,8 +24,11 @@ public interface TaskRepository extends JpaRepository<Task,Integer> {
     @Query("SELECT t from Task t WHERE t.dueDate< :now AND t.status IN :statuses")
     List<Task> findOverdueTasks(@Param("now") LocalDateTime now, @Param("statuses") List<TaskStatus> statuses);
 
+    @Query("SELECT t from Task t WHERE t.status != COMPLETED and t.project.id = :id")
+    List<Task> findIncompletedTasks(@Param("id") Integer id);
 
 
+    List<Task> findTasksByStatus(TaskStatus status);
 
-
+    List<Task> findAllByProject(Project project);
 }

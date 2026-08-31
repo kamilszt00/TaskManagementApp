@@ -6,12 +6,18 @@ import com.kamil.TaskManagement.DTO.ProjectResponse;
 
 import com.kamil.TaskManagement.mapper.ProjectMapper;
 import com.kamil.TaskManagement.model.Project;
+import com.kamil.TaskManagement.model.Task;
+import com.kamil.TaskManagement.model.TaskStatus;
 import com.kamil.TaskManagement.repository.ProjectRepository;
+import com.kamil.TaskManagement.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -19,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
-
+    private final TaskRepository taskRepository;
 
 
     public ResponseEntity<ProjectResponse> createProject(CreateProjectRequest request) {
@@ -42,10 +48,19 @@ public class ProjectService {
             project.setId(projectToUpdate.getId());
             return ResponseEntity.ok(projectMapper.toResponse(projectRepository.save(project)));
     }
-    public ResponseEntity<ProjectResponse> deleteProject(Integer id) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
-            projectRepository.delete(project);
-            return ResponseEntity.noContent().build();
+    @Transactional
+    public ResponseEntity<ProjectResponse> deleteProject(Integer projectToDeleteId, Integer projectToReassignId) {
+        Project projectToDelete = projectRepository.findById(projectToDeleteId)
+                .orElseThrow(() -> new EntityNotFoundException("Project to delete not found"));
+        Project projectToReassign = projectRepository.findById(projectToReassignId)
+                        .orElseThrow(() -> new EntityNotFoundException("Project to reassign not found"));
+        List<Task> incompletedTasks = taskRepository.findIncompletedTasks(projectToDeleteId);
+        incompletedTasks.forEach(task -> {
+            task.setProject(projectToReassign);
+        });
+        List<Task> completedTasks = taskRepository.findAllByProject(projectToDelete);
+        taskRepository.deleteAll(completedTasks);
+        projectRepository.delete(projectToDelete);
+        return ResponseEntity.noContent().build();
     }
 }

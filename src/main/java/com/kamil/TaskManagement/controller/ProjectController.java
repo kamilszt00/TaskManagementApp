@@ -31,9 +31,10 @@ public class ProjectController {
     }
 
     @DeleteMapping("/project/{id}")
-    public ResponseEntity<ProjectResponse> deleteProject(@PathVariable Integer id) {
-        return projectService.deleteProject(id);
+    public ResponseEntity<ProjectResponse> deleteProject(@PathVariable Integer id,@RequestParam Integer projectId) {
+        return projectService.deleteProject(id, projectId);
     }
+
 
 
 }
