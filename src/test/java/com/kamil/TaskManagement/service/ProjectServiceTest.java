@@ -3,6 +3,7 @@ package com.kamil.TaskManagement.service;
 import com.github.javafaker.Faker;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 import com.kamil.TaskManagement.DTO.TaskResponse;
+import com.kamil.TaskManagement.exception.ArgumentsEqualException;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.model.Task;
@@ -76,6 +77,14 @@ class ProjectServiceTest {
                     assertThat(task.getProject().getId()).isEqualTo(projectToReassignId));
                     assertThat(projectResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         }
+        @Test
+        @DisplayName("Should throw ArgumentsEqualException if supplied parameters are the same")
+        public void shouldThrowWhenProjectIdsEqual() {
+            Mockito.verifyNoInteractions(taskRepository,projectRepository);
+            assertThatThrownBy(() -> projectService.deleteProject(1,1))
+                    .isInstanceOf(ArgumentsEqualException.class);
+        }
+
     }
 
 
