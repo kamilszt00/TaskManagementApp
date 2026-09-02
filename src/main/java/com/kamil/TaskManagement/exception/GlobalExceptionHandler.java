@@ -74,4 +74,13 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+    @ExceptionHandler(ArgumentsEqualException.class)
+    public ResponseEntity<ErrorResponse> handleArgumentEqualException(ArgumentsEqualException argumentsEqualException) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(argumentsEqualException.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }

@@ -4,6 +4,7 @@ package com.kamil.TaskManagement.service;
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 
+import com.kamil.TaskManagement.exception.ArgumentsEqualException;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.model.Task;
@@ -50,6 +51,7 @@ public class ProjectService {
     }
     @Transactional
     public ResponseEntity<ProjectResponse> deleteProject(Integer projectToDeleteId, Integer projectToReassignId) {
+        if (projectToDeleteId.equals(projectToReassignId)) {throw new ArgumentsEqualException("You cannot reassign to the same project");}
         Project projectToDelete = projectRepository.findById(projectToDeleteId)
                 .orElseThrow(() -> new EntityNotFoundException("Project to delete not found"));
         Project projectToReassign = projectRepository.findById(projectToReassignId)
