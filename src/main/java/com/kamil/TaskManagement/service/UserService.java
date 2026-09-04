@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,11 +21,14 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<UserResponse> createUser(CreateUserRequest request) {
+        User user = userMapper.toRequest(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(201))
-                .body(userMapper.toResponse(userRepository.save(userMapper.toRequest(request))));
+                .body(userMapper.toResponse(userRepository.save(user)));
     }
 
     public ResponseEntity<UserResponse> getUser(Integer id) {
