@@ -43,15 +43,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> genericHandler(Exception ex) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .message(ex.getMessage())
-                .status(500)
-                .timestamp(LocalDateTime.now())
-                .build();
-        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponse> genericHandler(Exception ex) {
+//        ErrorResponse errorResponse = ErrorResponse.builder()
+//                .message(ex.getMessage())
+//                .status(500)
+//                .timestamp(LocalDateTime.now())
+//                .build();
+//        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+//    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
