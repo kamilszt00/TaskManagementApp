@@ -3,6 +3,7 @@ package com.kamil.TaskManagement.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,8 @@ public class CreateUserRequest {
     private String username;
     @Email
     private String email;
-    @NotBlank
+    @NotBlank(message = "User role should not be empty")
+    @Pattern(regexp = "EMPLOYEE|MANAGER|ADMIN", message = "Pick from EMPLOYEE,MANAGER,ADMIN")
     private String role;
 
 }
