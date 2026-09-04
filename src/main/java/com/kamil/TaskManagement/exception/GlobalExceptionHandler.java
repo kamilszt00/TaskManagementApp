@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> genericHandler(Exception ex) {
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .message("An unexpected Error occured")
+                .message(ex.getMessage())
                 .status(500)
                 .timestamp(LocalDateTime.now())
                 .build();

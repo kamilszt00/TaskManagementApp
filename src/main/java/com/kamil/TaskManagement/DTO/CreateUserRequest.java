@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class CreateUserRequest {
     @NotBlank
     private String username;
+    @NotBlank
+    private String password;
     @Email
     private String email;
     @NotBlank(message = "User role should not be empty")

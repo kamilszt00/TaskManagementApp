@@ -1,6 +1,7 @@
 package com.kamil.TaskManagement.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +29,8 @@ public class User {
     @Column (length = 35,name = "u_name")
     private String username;
 
-
+    @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column (unique = true,nullable = false)
