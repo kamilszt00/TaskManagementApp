@@ -6,13 +6,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -43,15 +43,35 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> genericHandler(Exception ex) {
-//        ErrorResponse errorResponse = ErrorResponse.builder()
-//                .message(ex.getMessage())
-//                .status(500)
-//                .timestamp(LocalDateTime.now())
-//                .build();
-//        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> genericHandler(Exception ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(ex.getMessage())
+                .status(500)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> accessDeniedHandler(AccessDeniedException accessDeniedException) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(accessDeniedException.getMessage())
+                .status(403)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> badCredentialsHandler(BadCredentialsException badCredentialsException) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(badCredentialsException.getMessage())
+                .status(401)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
