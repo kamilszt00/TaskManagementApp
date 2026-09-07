@@ -22,6 +22,9 @@ public class UserPrincipal implements UserDetails {
     public @Nullable String getPassword() {
         return user.getPassword();
     }
+    public User getUser() {
+        return user;
+    }
 
     @Override
     public String getUsername() {

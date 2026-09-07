@@ -33,7 +33,6 @@ public class TaskMangementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TaskMangementApplication.class, args);
 
-		System.out.println(new BCryptPasswordEncoder().encode("password123"));
 	}
 
 
