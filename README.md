@@ -25,6 +25,7 @@ A stateless REST API built to manage tasks assignments, project progress and use
  - Each endpoint never returns an object entity, everything is wired using DTOs and mapped via MapStruct for fast and secure handling of data.
  - Created a custom JWT Authentication filter
  - Created custom TaskSecurity Bean that enables safer task management
+ - @Transactional used for deleting project and reassigning of incompleted tasks to specified project
 ## API endpoints
 | Method | Endpoint | Description |
 |---|---|---|
@@ -37,6 +38,7 @@ A stateless REST API built to manage tasks assignments, project progress and use
 | PATCH | /task/{id}/complete | Completes a task |
 | GET | /task/overdue | Get tasks that are overdue |
 | PATCH | /task/{id}/reassign | Reassigns a task to different assignee |
+| DELETE | /project/{id} | deletes project and reassigns incompleted task to project specified in RequestParam |
 
 ## How to run
 ### Dependencies
