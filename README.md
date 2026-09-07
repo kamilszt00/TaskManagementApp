@@ -9,12 +9,6 @@ What it does, Paragraph
 - Docker, MySQL
 
 ## Features
- - Global exception handlers
- - DTO mapping
- - model mappers
- - Custom JWTAuthFilter
- - custom TaskSecurity Bean
- - 
 ### Task & Project management
 - Task reassignment
 - CRUD opetation for task management
@@ -27,7 +21,11 @@ What it does, Paragraph
 - Full unit test suite
 - GitHub Actions CI pipeline
 ## Architecture
-
+ - Global exception handlers
+ - DTO mapping
+ - model mappers
+ - Custom JWTAuthFilter
+ - custom TaskSecurity Bean
 ## API endpoints
 | Method | Endpoint | Description |
 |---|---|---|
