@@ -9,7 +9,12 @@ What it does, Paragraph
 - Docker, MySQL
 
 ## Features
-
+ - Global exception handlers
+ - DTO mapping
+ - model mappers
+ - Custom JWTAuthFilter
+ - custom TaskSecurity Bean
+ - 
 ### Task & Project management
 - Task reassignment
 - CRUD opetation for task management
