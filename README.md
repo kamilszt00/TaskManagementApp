@@ -1,6 +1,6 @@
 # Task Management REST API
 
-What it does, Paragraph
+A stateless REST API built to manage tasks assignments, project progress and user specific workflows.
 
 ## Technologies
 - Java 21, MapStruct, Lombok
@@ -21,11 +21,10 @@ What it does, Paragraph
 - Full unit test suite
 - GitHub Actions CI pipeline
 ## Architecture
- - Global exception handlers
- - DTO mapping
- - model mappers
- - Custom JWTAuthFilter
- - custom TaskSecurity Bean
+ - Created GlobalExceptionHandler with custom exceptions to properly handle them and provide extensive and clear message about occuring exceptions
+ - Each endpoint never returns an object entity, everything is wired using DTOs and mapped via MapStruct for fast and secure handling of data.
+ - Created a custom JWT Authentication filter
+ - Created custom TaskSecurity Bean that enables safer task management
 ## API endpoints
 | Method | Endpoint | Description |
 |---|---|---|
@@ -53,3 +52,5 @@ docker run -p 8080:8080 -e DB_HOST=... task-management
 \`\`\`
 
 ## What's next
+- Improving endpoints exposing vulnerable data
+- Enhancing some endpoints (AllTask endpoint for user)
