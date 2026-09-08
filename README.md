@@ -15,7 +15,7 @@ A stateless REST API built to manage tasks assignments, project progress and use
 - Overdue tasks filtering
 ### Authentication & Authorization
 - JWT-based authentication
-- Role-based authentication with @PreAuthorize and 'hasAuthority'
+- Role-based authorization with @PreAuthorize and 'hasAuthority'
 - Ownership based with custom TaskSecurity bean for assignee checks
 ### Testing
 - Full unit test suite
