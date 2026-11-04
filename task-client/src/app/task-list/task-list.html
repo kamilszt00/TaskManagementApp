@@ -1,0 +1,20 @@
+<section>
+  <p>
+    Tasks left: {{taskService.tasksLeft()}}
+  </p>
+  @for (task of taskService.tasks(); track task.id) {
+    <p> <a [routerLink]="['/tasks', task.id]">{{task.title}}</a> {{task.status}}
+      @if (task.status === "IN_PROGRESS") {
+      <button (click)="taskService.complete(task.id)">Complete</button>
+      } @else if (task.status === "TODO") {
+        <button (click)="taskService.start(task.id)">Start</button>
+      }
+    </p>
+  }
+
+  @if(taskService.errorMessage()) {
+    <p>{{ taskService.errorMessage()}}</p>
+  }
+
+  <a routerLink="/tasks/new">New Task</a>
+</section>

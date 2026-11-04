@@ -1,0 +1,9 @@
+<p>task-details</p>
+
+@if (taskService.selectedTask(); as task) {
+  <p>
+    {{task.title}} | {{task.id}} | {{task.status}} | {{task.assigneeID}} | {{task.dueDate}} | {{task.projectID}} | {{task.tagsID}}
+  </p>
+
+  <a routerLink="/tasks">back to list</a>
+}

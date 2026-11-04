@@ -1,0 +1,18 @@
+<p>Create new task</p>
+
+<form [formGroup]="taskCreateForm" (ngSubmit)="onSubmit()">
+  <input type="text" formControlName="title" placeholder="Title of the task"/>
+  <select  formControlName="status">
+    <option value="TODO">To-do</option>
+    <option value="IN_PROGRESS">In progress</option>
+    <option value="COMPLETED">Completed</option>
+  </select>
+  <input type="datetime-local" formControlName="dueDate"/>
+  <input type="number" formControlName="assigneeID" placeholder="ID of the assignee"/>
+  <input type="number" formControlName="projectID" placeholder="ID of the project"/>
+  <input type="text" formControlName="tagsID" placeholder="Tag IDs, e.g. 1,2"/>
+  <button type="submit" [disabled]="!taskCreateForm.valid">Submit</button>
+
+</form>
+
+

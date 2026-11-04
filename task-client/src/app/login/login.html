@@ -1,0 +1,13 @@
+<p>Login page</p>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input type="text" formControlName="username"/>
+  <input type="password" formControlName="password"/>
+  <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+
+  @if (authService.errorMessage()) {
+    <p> Invalid username or password {{authService.errorMessage()}}</p>
+  }
+
+
+</form>
