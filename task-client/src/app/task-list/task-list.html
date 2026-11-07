@@ -1,20 +1,29 @@
 <section>
-  <p>
-    Tasks left: {{taskService.tasksLeft()}}
-  </p>
+  <div class="tasks-left">
+    <span class="tasks-left-label">Tasks left</span>
+    <span class="tasks-left-count">{{taskService.tasksLeft()}}</span>
+  </div>
+
   @for (task of taskService.tasks(); track task.id) {
-    <p> <a [routerLink]="['/tasks', task.id]">{{task.title}}</a> {{task.status}}
+    <div class="task-card"
+         [class.todo]="task.status === 'TODO'"
+         [class.in-progress]="task.status === 'IN_PROGRESS'"
+         [class.completed]="task.status === 'COMPLETED'">
+      <div class="task-info">
+        <a [routerLink]="['/tasks', task.id]">{{task.title}}</a>
+        <span class="status">{{task.status}}</span>
+      </div>
       @if (task.status === "IN_PROGRESS") {
-      <button (click)="taskService.complete(task.id)">Complete</button>
+        <button class="btn btn-complete" (click)="taskService.complete(task.id)">Complete</button>
       } @else if (task.status === "TODO") {
-        <button (click)="taskService.start(task.id)">Start</button>
+        <button class="btn btn-start" (click)="taskService.start(task.id)">Start</button>
       }
-    </p>
+    </div>
   }
 
   @if(taskService.errorMessage()) {
     <p>{{ taskService.errorMessage()}}</p>
   }
 
-  <a routerLink="/tasks/new">New Task</a>
+  <a class="new-task" routerLink="/tasks/new">+ New Task</a>
 </section>

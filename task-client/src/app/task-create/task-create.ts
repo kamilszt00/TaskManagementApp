@@ -2,10 +2,11 @@ import {Component, inject} from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TaskService} from '../task.service';
 import {CreateTaskRequest, TaskStatus} from '../task.model';
+import {RouterLink} from '@angular/router';
 
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-task-create',
   styleUrl: './task-create.css',
   templateUrl: './task-create.html',
@@ -33,12 +34,3 @@ export class TaskCreate {
 }
 
 
-//export interface CreateTaskRequest {
-//   title:string;
-//   status:TaskStatus;
-//   dueDate:string;
-//   projectID:number;
-//   assigneeID:number;
-//   tagsID:number[];
-//
-// }

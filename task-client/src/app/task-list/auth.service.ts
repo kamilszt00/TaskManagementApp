@@ -2,6 +2,7 @@ import {inject, Service, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Router} from '@angular/router';
 import {TaskService} from '../task.service';
+import {environment} from '../../environments/environment';
 // plus the import for your service decorator, same as in task.service.ts
 
 // the same decorator you used on TaskService
@@ -18,7 +19,7 @@ export class AuthService {
 
 
   login(credentials : {username: string ;password : string}) {
-    this.httpClient.post("http://localhost:8080/authenticate",credentials,{ responseType: 'text' }).subscribe({
+    this.httpClient.post(`${environment.apiUrl}/authenticate`,credentials,{ responseType: 'text' }).subscribe({
       next: token => {
         this.token.set(token);
         this.router.navigate(['/tasks'])

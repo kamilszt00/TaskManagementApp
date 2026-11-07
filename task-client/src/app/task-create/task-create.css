@@ -1,0 +1,70 @@
+/* Layout (flex column, full-width 44px controls) comes from the global form rules in styles.css */
+
+.form-card {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  color: #1565c0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+input,
+select {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+.submit {
+  margin-top: 8px;
+  border: none;
+  border-radius: 12px;
+  background: #1565c0;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit:active {
+  background: #0d47a1;
+}
+
+.submit:disabled {
+  background: #b0bec5;
+  cursor: not-allowed;
+}
+
+.cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 44px;
+  border: 1px solid #1565c0;
+  border-radius: 12px;
+  color: #1565c0;
+  font-weight: 600;
+  text-decoration: none;
+}

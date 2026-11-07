@@ -99,4 +99,10 @@ public class TaskService {
         task.setUser(user);
         return ResponseEntity.ok(taskMapper.toResponse(taskRepository.save(task)));
     }
+
+    public ResponseEntity<List<TaskResponse>> getAllTasks() {
+        List<Task> allTasks = taskRepository.findAll();
+        List<TaskResponse> taskResponses = taskMapper.toResponseList(allTasks);
+        return ResponseEntity.ok(taskResponses);
+    }
 }

@@ -21,7 +21,7 @@ public class TaskController {
     private final TaskService taskService;
 
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
     @PostMapping("/task")
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody CreateTaskRequest request) {
         return taskService.createTask(request);
@@ -30,8 +30,13 @@ public class TaskController {
     @GetMapping("/task/{id}")
     public ResponseEntity<TaskResponse> getTask(@PathVariable Integer id) {
         return taskService.getTask(id);
-
     }
+    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @GetMapping("/task/all")
+    public ResponseEntity<List<TaskResponse>> getAllTasks() {
+        return taskService.getAllTasks();
+    }
+
     @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
     @PutMapping("/task/{id}")
     public ResponseEntity<TaskResponse> putTask(@Valid @RequestBody UpdateTaskRequest request, @PathVariable Integer id) {

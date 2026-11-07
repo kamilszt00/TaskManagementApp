@@ -1,8 +1,8 @@
 <p>Login page</p>
 
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" formControlName="username"/>
-  <input type="password" formControlName="password"/>
+  <input type="text" formControlName="username" autocapitalize="off" placeholder="Username"/>
+  <input type="password" formControlName="password" placeholder="Password"/>
   <button type="submit" [disabled]="!loginForm.valid">Submit</button>
 
   @if (authService.errorMessage()) {
