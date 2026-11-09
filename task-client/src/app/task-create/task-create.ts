@@ -3,10 +3,14 @@ import {FormGroup, FormControl, ReactiveFormsModule, Validators} from '@angular/
 import {TaskService} from '../task.service';
 import {CreateTaskRequest, TaskStatus} from '../task.model';
 import {RouterLink} from '@angular/router';
+import {MatButton} from '@angular/material/button';
+import {MatInput} from '@angular/material/input';
+import {MatFormField, MatError, MatLabel} from '@angular/material/input';
+import {MatSelect, MatOption} from '@angular/material/select';
 
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink,MatButton, MatInput, MatFormField,MatError, MatLabel, MatSelect, MatOption],
   selector: 'app-task-create',
   styleUrl: './task-create.css',
   templateUrl: './task-create.html',

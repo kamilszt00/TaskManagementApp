@@ -1,9 +1,41 @@
-<p>task-details</p>
+<h2>Task details</h2>
 
 @if (taskService.selectedTask(); as task) {
-  <p>
-    {{task.title}} | {{task.id}} | {{task.status}} | {{task.assigneeID}} | {{task.dueDate}} | {{task.projectID}} | {{task.tagsID}}
-  </p>
+  <mat-card>
+    <mat-card-header class="details-header">
+      <b>{{ task.title }}</b>
+      <span class="status-badge"
+            [class.todo]="task.status === 'TODO'"
+            [class.in-progress]="task.status === 'IN_PROGRESS'"
+            [class.completed]="task.status === 'COMPLETED'">
+    @if (task.status === 'TODO') {
+      <mat-icon>radio_button_unchecked</mat-icon>
+    } @else if (task.status === 'IN_PROGRESS') {
+      <mat-icon>autorenew</mat-icon>
+    } @else {
+      <mat-icon>check_circle</mat-icon>
+    }
+        {{ task.status }}
+  </span>
+    </mat-card-header>
+    <mat-card-content>
+      <dl>
+        <dt>Status</dt> <dd> {{task.status}}</dd>
+        <dt>Due Date</dt> <dd> {{task.dueDate}}</dd>
+        <dt>Task Title</dt> <dd> {{task.title}}</dd>
+        <dt>Task ID</dt> <dd> {{task.id}}</dd>
+        <dt>Assignee ID</dt> <dd> {{task.assigneeID}}</dd>
+        <dt>Project ID</dt> <dd> {{task.projectID}}</dd>
+        <dt>Tags ID</dt> <dd>{{task.tagsID}}</dd>
+        <dt></dt>
+      </dl>
+    </mat-card-content>
+  </mat-card>
 
-  <a routerLink="/tasks">back to list</a>
+
+
+  <button mat-flat-button routerLink="/tasks">Back to list</button>
 }
+
+
+

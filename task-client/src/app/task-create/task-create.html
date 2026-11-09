@@ -2,41 +2,41 @@
   <h1>Create new task</h1>
 
   <form [formGroup]="taskCreateForm" (ngSubmit)="onSubmit()">
-    <label class="field">
-      <span>Title</span>
-      <input type="text" formControlName="title" placeholder="Title of the task"/>
-    </label>
 
-    <label class="field">
-      <span>Status</span>
-      <select formControlName="status">
-        <option value="TODO">To-do</option>
-        <option value="IN_PROGRESS">In progress</option>
-        <option value="COMPLETED">Completed</option>
-      </select>
-    </label>
+    <mat-form-field class="field">
+      <mat-label>Title of the task</mat-label>
+      <input type="text" formControlName="title" matInput required/>
+      @if (taskCreateForm.controls.title.touched && taskCreateForm.controls.title.hasError('required')) {
+        <mat-error>Please add task title</mat-error>
+      }
+    </mat-form-field>
 
-    <label class="field">
-      <span>Due date</span>
-      <input type="datetime-local" formControlName="dueDate"/>
-    </label>
 
-    <label class="field">
-      <span>Assignee ID</span>
-      <input type="number" formControlName="assigneeID" placeholder="ID of the assignee"/>
-    </label>
-
-    <label class="field">
-      <span>Project ID</span>
-      <input type="number" formControlName="projectID" placeholder="ID of the project"/>
-    </label>
-
-    <label class="field">
-      <span>Tags</span>
-      <input type="text" formControlName="tagsID" placeholder="Tag IDs, e.g. 1,2"/>
-    </label>
-
-    <button type="submit" class="submit" [disabled]="!taskCreateForm.valid">Create task</button>
-    <a class="cancel" routerLink="/tasks">Cancel</a>
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="TODO">To do</mat-option>
+        <mat-option value="IN_PROGRESS">In progress</mat-option>
+        <mat-option value="COMPLETED">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Due date</mat-label>
+      <input type="datetime-local" formControlName="dueDate" matInput required/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Assignee ID</mat-label>
+      <input type="number" formControlName="assigneeID" matInput required/>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Project ID</mat-label>
+        <input type="number" formControlName="projectID" matInput required/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tags IDs, e.g 1,2</mat-label>
+      <input type="text" formControlName="tagsID" matInput required/>
+    </mat-form-field>
+    <button mat-flat-button [disabled]="!taskCreateForm.valid">Create task</button>
+    <button mat-flat-button routerLink="/tasks">Cancel</button>
   </form>
 </div>

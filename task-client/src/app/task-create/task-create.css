@@ -1,4 +1,4 @@
-/* Layout (flex column, full-width 44px controls) comes from the global form rules in styles.css */
+/* Form layout (flex column with gap) comes from the global form rule in styles.css */
 
 .form-card {
   padding: 20px;
@@ -18,24 +18,11 @@ h1 {
   gap: 6px;
 }
 
-.field span {
+
+.field > span {
   font-size: 14px;
   font-weight: 600;
   color: #555;
-}
-
-input,
-select {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #1565c0;
-  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
 }
 
 .submit {

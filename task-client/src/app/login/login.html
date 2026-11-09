@@ -1,9 +1,24 @@
 <p>Login page</p>
 
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" formControlName="username" autocapitalize="off" placeholder="Username"/>
-  <input type="password" formControlName="password" placeholder="Password"/>
-  <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input type="text" formControlName="username" autocapitalize="off" matInput required/>
+    @if (loginForm.controls.username.touched && loginForm.controls.username.hasError('required')) {
+      <mat-error>Username is required</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input type="password" formControlName="password" matInput required/>
+    @if (loginForm.controls.password.touched && loginForm.controls.password.hasError('required')) {
+      <mat-error>Password is required</mat-error>
+    }
+  </mat-form-field>
+
+
+
+  <button type="submit" mat-flat-button [disabled]="!loginForm.valid">Submit</button>
 
   @if (authService.errorMessage()) {
     <p> Invalid username or password {{authService.errorMessage()}}</p>

@@ -6,15 +6,16 @@
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.4;
+
+}
+.page {
   max-width: 600px;
   margin: 0 auto;
   padding: 16px;
 }
 
 /* 16px prevents iOS from zooming in when an input is tapped */
-input, select, button {
-  font-size: 16px;
-}
+
 
 /* Shared form layout (login + create task) */
 form {
@@ -23,11 +24,7 @@ form {
   gap: 12px;
 }
 
-/* Only controls inside a form go full width — Start/Complete buttons stay normal size */
-form input,
-form select,
-form button {
+mat-form-field {
   width: 100%;
-  min-height: 44px;
-  padding: 8px 12px;
 }
+

@@ -1,9 +1,11 @@
 import {Component, inject, signal} from '@angular/core';
 import {AuthService} from './task-list/auth.service';
-import { RouterOutlet} from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
+import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
+import {MatButton} from '@angular/material/button';
 
 @Component({
-  imports: [ RouterOutlet],
+  imports: [RouterOutlet, MatToolbarRow, MatButton, MatToolbar, RouterLink],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
