@@ -49,5 +49,11 @@ public class ProjectController {
     }
 
 
+    @PreAuthorize("@projectSecurity.isManager(#project_id,authentication) or hasAuthority('ADMIN')")
+    @DeleteMapping("/project/{project_id}/assignees/{assignee_id}")
+    public ResponseEntity<Void> deleteAssigneeFromProject(@PathVariable Integer project_id, @PathVariable Integer assignee_id) {
+        return projectService.deleteAssigneeFromProject(project_id,assignee_id);
+    }
+
 
 }

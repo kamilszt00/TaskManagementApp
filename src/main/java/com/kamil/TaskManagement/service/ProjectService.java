@@ -91,5 +91,15 @@ public class ProjectService {
         return ResponseEntity.noContent().build();
     }
 
+    @Transactional
+    public ResponseEntity<Void> deleteAssigneeFromProject(Integer projectID, Integer assigneeID) {
+        Project project = projectRepository.findById(projectID)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        if (!project.getAssignees().removeIf(assignee -> assignee.getId().equals(assigneeID))) {
+            throw new EntityNotFoundException("User not found");
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
