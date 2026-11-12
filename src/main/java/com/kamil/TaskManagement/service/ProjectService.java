@@ -5,10 +5,9 @@ import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 
 import com.kamil.TaskManagement.exception.ArgumentsEqualException;
+import com.kamil.TaskManagement.exception.InvalidUserRoleException;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
-import com.kamil.TaskManagement.model.Project;
-import com.kamil.TaskManagement.model.Task;
-import com.kamil.TaskManagement.model.TaskStatus;
+import com.kamil.TaskManagement.model.*;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
@@ -34,6 +33,12 @@ public class ProjectService {
     public ResponseEntity<ProjectResponse> createProject(CreateProjectRequest request) {
         Project project = projectMapper.toRequest(request);
         project.setManager(userRepository.getReferenceById(request.getManagerID()));
+        User userManager = userRepository.findById(request.getManagerID()).orElseThrow(() -> new EntityNotFoundException("Manager not found"));
+        if (userManager.getRole().equals(UserRole.MANAGER)) {
+            project.setManager(userManager);
+        } else {
+            throw new InvalidUserRoleException("User is not a manager");
+        }
         ProjectResponse projectResponse = projectMapper.toResponse(projectRepository.save(project));
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(201))
