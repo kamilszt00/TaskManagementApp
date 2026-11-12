@@ -18,10 +18,18 @@ public class ProjectSecurity {
     final private ProjectRepository projectRepository;
     final private UserRepository userRepository;
     public boolean isManager( Integer projectID, Authentication authentication) {
-        Project project = projectRepository.findById(projectID).orElseThrow(() -> new EntityNotFoundException("Project not foudn"));
+        Project project = projectRepository.findById(projectID).orElseThrow(() -> new EntityNotFoundException("Project not found"));
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        assert userPrincipal != null;
         User user = userPrincipal.getUser();
         return project.getManager().getId().equals(user.getId());
+    }
+    public boolean isAssignee(Integer projectID, Authentication authentication) {
+        Project project = projectRepository.findById(projectID).orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        assert userPrincipal != null;
+        User user = userPrincipal.getUser();
+        return project.getAssignees().contains(user);
     }
 
 
