@@ -1,9 +1,13 @@
 <header>
   <mat-toolbar>
     <mat-toolbar-row>
-      <h3>TaskManagement</h3>
+      <h3>TMapp</h3>
       <span class="spacer"></span>
       <button mat-button routerLink="/tasks">Task List</button>
+      @if (authService.token()) {
+        <button mat-icon-button (click)="logout()">logout</button>
+        {{authService.role()}}
+      }
     </mat-toolbar-row>
   </mat-toolbar>
 </header>

@@ -2,6 +2,8 @@ package com.kamil.TaskManagement.service;
 
 
 import com.kamil.TaskManagement.DTO.AuthRequest;
+import com.kamil.TaskManagement.model.User;
+import com.kamil.TaskManagement.model.UserPrincipal;
 import com.kamil.TaskManagement.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +21,9 @@ public class AuthService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
             );
-            return jwtUtil.generateToken(authentication.getName());
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            assert userPrincipal != null;
+            return jwtUtil.generateToken(authentication.getName(), userPrincipal.getRole());
 
     }
 }

@@ -12,12 +12,12 @@ export interface Task  {
 }
 
 export interface CreateTaskRequest {
-  title:string;
-  status:TaskStatus;
-  dueDate:string;
-  projectID:number;
-  assigneeID:number;
-  tagsID:number[];
+  title: string;
+  status: TaskStatus;
+  dueDate: string;
+  projectID: number;
+  assigneeID: number;
+  tagsID: number[];
 
 }
 

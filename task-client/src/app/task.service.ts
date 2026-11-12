@@ -54,6 +54,12 @@ export class TaskService {
     })
   }
 
+  clear() {
+    this.tasks.set([]);
+    this.selectedTask.set(null);
+    this.errorMessage.set(null);
+  }
+
 
 }
 
