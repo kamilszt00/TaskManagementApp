@@ -19,4 +19,5 @@ public class ProjectResponse {
     private String description;
     private LocalDateTime createdAt;
     private List<String> tasksName;
+    private Integer managerID;
 }

@@ -34,4 +34,14 @@ public class Project {
     @Builder.Default
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
+
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(name = "PROJECT_ASSIGNEE_LINK",joinColumns = @JoinColumn(name="project_id"),inverseJoinColumns = @JoinColumn(name="user_id"))
+    private Set<User> assignees = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private User manager;
 }
+

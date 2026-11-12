@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 public interface ProjectMapper {
 
     @Mapping(target = "tasksName", source = "tasks")
+    @Mapping(target = "managerID", source = "manager.id")
     ProjectResponse toResponse(Project project);
 
     Project toRequest(CreateProjectRequest request);
@@ -20,5 +21,7 @@ public interface ProjectMapper {
     default String taskToName(Task task) {
         return task.getTitle();
     }
+
+
 
 }

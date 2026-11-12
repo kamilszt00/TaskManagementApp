@@ -11,6 +11,7 @@ import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.model.TaskStatus;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
+import com.kamil.TaskManagement.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,12 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
 
     public ResponseEntity<ProjectResponse> createProject(CreateProjectRequest request) {
         Project project = projectMapper.toRequest(request);
+        project.setManager(userRepository.getReferenceById(request.getManagerID()));
         ProjectResponse projectResponse = projectMapper.toResponse(projectRepository.save(project));
         return ResponseEntity
                 .status(HttpStatusCode.valueOf(201))
