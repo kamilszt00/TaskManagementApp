@@ -3,6 +3,7 @@ package com.kamil.TaskManagement.mapper;
 
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
+import com.kamil.TaskManagement.DTO.ProjectSummary;
 import com.kamil.TaskManagement.model.Project;
 import com.kamil.TaskManagement.model.Task;
 import org.mapstruct.Mapper;
@@ -15,6 +16,9 @@ public interface ProjectMapper {
     @Mapping(target = "tasksName", source = "tasks")
     @Mapping(target = "managerID", source = "manager.id")
     ProjectResponse toResponse(Project project);
+
+    @Mapping(target = "managerID", source = "manager.id")
+    ProjectSummary toResponseSummary(Project project);
 
     Project toRequest(CreateProjectRequest request);
 

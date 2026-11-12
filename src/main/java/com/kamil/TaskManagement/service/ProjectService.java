@@ -5,6 +5,7 @@ import com.kamil.TaskManagement.DTO.AssigneesRequest;
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 
+import com.kamil.TaskManagement.DTO.ProjectSummary;
 import com.kamil.TaskManagement.exception.ArgumentsEqualException;
 import com.kamil.TaskManagement.exception.InvalidUserRoleException;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
@@ -100,6 +101,28 @@ public class ProjectService {
         }
         return ResponseEntity.noContent().build();
     }
+
+    public ResponseEntity<List<ProjectSummary>> getMyProjects(UserPrincipal userPrincipal) {
+        User user = userPrincipal.getUser();
+        List<Project> myProjects = new ArrayList<>();
+        List<ProjectSummary> summaries = new ArrayList<>();
+        switch (user.getRole()) {
+            case ADMIN -> myProjects = projectRepository.findAll();
+            case MANAGER -> myProjects = projectRepository.findByManager_Id(user.getId());
+            case EMPLOYEE -> myProjects = projectRepository.findByAssignees_Id(user.getId());
+            case null -> throw new InvalidUserRoleException("Wrong role, something went wrong");
+        }
+        myProjects.forEach( project -> {
+            summaries.add(projectMapper.toResponseSummary(project));
+                }
+
+        );
+
+
+        return ResponseEntity.ok(summaries);
+    }
+
+
 
 
 }

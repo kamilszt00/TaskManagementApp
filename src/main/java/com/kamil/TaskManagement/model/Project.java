@@ -25,7 +25,7 @@ public class Project {
     @Column(length = 35)
     private String name;
 
-
+    @Column(length = 255)
     private String description;
 
     @Column(nullable = false, updatable = false)

@@ -2,12 +2,14 @@ package com.kamil.TaskManagement.controller;
 
 
 import com.kamil.TaskManagement.DTO.*;
+import com.kamil.TaskManagement.model.UserPrincipal;
 import com.kamil.TaskManagement.service.ProjectService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +44,9 @@ public class ProjectController {
         return projectService.deleteProject(id, projectId);
     }
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+
+    //FIX THAT
+    @PreAuthorize("@projectSecurity.isManager(#id,authentication) or hasAuthority('ADMIN')")
     @PostMapping("/project/{id}/assignees")
     public ResponseEntity<Void> addAssigneesToProject(@PathVariable Integer id,@RequestBody AssigneesRequest request) {
         return projectService.addAssigneesToProject(id, request);
@@ -54,6 +58,12 @@ public class ProjectController {
     public ResponseEntity<Void> deleteAssigneeFromProject(@PathVariable Integer project_id, @PathVariable Integer assignee_id) {
         return projectService.deleteAssigneeFromProject(project_id,assignee_id);
     }
+    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN','EMPLOYEE')")
+    @GetMapping("/project/mine")
+    public ResponseEntity<List<ProjectSummary>> getMyProjects(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return projectService.getMyProjects(userPrincipal);
+    }
+
 
 
 }
