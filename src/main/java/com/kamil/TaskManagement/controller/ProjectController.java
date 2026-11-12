@@ -4,10 +4,14 @@ package com.kamil.TaskManagement.controller;
 import com.kamil.TaskManagement.DTO.*;
 import com.kamil.TaskManagement.service.ProjectService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,10 +36,16 @@ public class ProjectController {
         return projectService.updateProject(request, id);
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/project/{id}")
     public ResponseEntity<ProjectResponse> deleteProject(@PathVariable Integer id,@RequestParam Integer projectId) {
         return projectService.deleteProject(id, projectId);
+    }
+
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @PostMapping("/project/{id}/assignees")
+    public ResponseEntity<Void> addAssigneesToProject(@PathVariable Integer id,@RequestBody AssigneesRequest request) {
+        return projectService.addAssigneesToProject(id, request);
     }
 
 

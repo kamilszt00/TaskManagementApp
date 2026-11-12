@@ -1,6 +1,7 @@
 package com.kamil.TaskManagement.service;
 
 
+import com.kamil.TaskManagement.DTO.AssigneesRequest;
 import com.kamil.TaskManagement.DTO.CreateProjectRequest;
 import com.kamil.TaskManagement.DTO.ProjectResponse;
 
@@ -18,7 +19,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -71,6 +75,19 @@ public class ProjectService {
         List<Task> completedTasks = taskRepository.findAllByProject(projectToDelete);
         taskRepository.deleteAll(completedTasks);
         projectRepository.delete(projectToDelete);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @Transactional
+    public ResponseEntity<Void> addAssigneesToProject(Integer projectID, AssigneesRequest request) {
+        Project project = projectRepository.findById(projectID)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        List<User> usersToAdd = userRepository.findAllById(request.getUsersID());
+        if (usersToAdd.size() != request.getUsersID().size()) {
+            throw new EntityNotFoundException("User do not exist");
+        }
+        project.getAssignees().addAll(usersToAdd);
         return ResponseEntity.noContent().build();
     }
 
