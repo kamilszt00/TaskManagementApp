@@ -2,6 +2,7 @@ package com.kamil.TaskManagement.controller;
 
 
 import com.kamil.TaskManagement.DTO.*;
+import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.model.UserPrincipal;
 import com.kamil.TaskManagement.service.ProjectService;
 import jakarta.validation.Valid;
@@ -64,6 +65,10 @@ public class ProjectController {
         return projectService.getMyProjects(userPrincipal);
     }
 
-
+    @PreAuthorize("@projectSecurity.isManager(#project_id,authentication) or @projectSecurity.isAssignee(#project_id,authentication) or hasAuthority('ADMIN')")
+    @GetMapping("/project/{project_id}/tasks")
+    public ResponseEntity<List<TaskResponse>> getMyTasksPerProject(@PathVariable Integer project_id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return projectService.getMyTasksPerProject(project_id, userPrincipal);
+    }
 
 }

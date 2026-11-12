@@ -11,5 +11,5 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
     List<Project> findByManager_Id(Integer Id);
     List<Project> findByAssignees_Id(Integer Id);
-
+    boolean existsByIdAndAssignees_Id(Integer projectId, Integer userId);
 }

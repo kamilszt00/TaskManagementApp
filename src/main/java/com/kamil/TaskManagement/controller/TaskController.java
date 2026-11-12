@@ -47,10 +47,10 @@ public class TaskController {
     public ResponseEntity<TaskResponse> deleteTask(@PathVariable Integer id) {
         return taskService.deleteTask(id);
     }
-    @PreAuthorize("@taskSecurity.isAssignee(#id,authentication) or hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("@taskSecurity.isAssigneeOrManager(#id,authentication) or hasAuthority('ADMIN')")
     @PatchMapping("task/{id}/start")
     public ResponseEntity<TaskResponse> startTask(@PathVariable Integer id) {return taskService.startTask(id);}
-    @PreAuthorize("@taskSecurity.isAssignee(#id,authentication) or hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("@taskSecurity.isAssigneeOrManager(#id,authentication) or hasAuthority('ADMIN')")
     @PatchMapping("task/{id}/complete")
     public ResponseEntity<TaskResponse> completeTask(@PathVariable Integer id) {return taskService.completeTask(id);}
     @GetMapping("task/overdue")

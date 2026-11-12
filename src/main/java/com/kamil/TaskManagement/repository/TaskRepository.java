@@ -1,9 +1,6 @@
 package com.kamil.TaskManagement.repository;
 
-import com.kamil.TaskManagement.model.Project;
-import com.kamil.TaskManagement.model.Tag;
-import com.kamil.TaskManagement.model.Task;
-import com.kamil.TaskManagement.model.TaskStatus;
+import com.kamil.TaskManagement.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,4 +30,6 @@ public interface TaskRepository extends JpaRepository<Task,Integer> {
     List<Task> findTasksByStatus(TaskStatus status);
 
     List<Task> findAllByProject(Project project);
+
+    List<Task> findAllByProjectAndUser(Project project, User user);
 }

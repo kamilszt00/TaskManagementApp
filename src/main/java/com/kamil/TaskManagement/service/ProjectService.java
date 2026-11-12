@@ -1,14 +1,12 @@
 package com.kamil.TaskManagement.service;
 
 
-import com.kamil.TaskManagement.DTO.AssigneesRequest;
-import com.kamil.TaskManagement.DTO.CreateProjectRequest;
-import com.kamil.TaskManagement.DTO.ProjectResponse;
+import com.kamil.TaskManagement.DTO.*;
 
-import com.kamil.TaskManagement.DTO.ProjectSummary;
 import com.kamil.TaskManagement.exception.ArgumentsEqualException;
 import com.kamil.TaskManagement.exception.InvalidUserRoleException;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
+import com.kamil.TaskManagement.mapper.TaskMapper;
 import com.kamil.TaskManagement.model.*;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
@@ -33,6 +31,7 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final TaskMapper taskMapper;
 
 
     public ResponseEntity<ProjectResponse> createProject(CreateProjectRequest request) {
@@ -117,11 +116,26 @@ public class ProjectService {
                 }
 
         );
-
-
         return ResponseEntity.ok(summaries);
     }
 
+    public ResponseEntity<List<TaskResponse>> getMyTasksPerProject(Integer id, UserPrincipal userPrincipal) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        User user = userPrincipal.getUser();
+        List<Task> myTasks = new ArrayList<>();
+        List<TaskResponse> myTasksToReturn = new ArrayList<>();
+        switch (user.getRole()) {
+            case EMPLOYEE -> myTasks = taskRepository.findAllByProjectAndUser(project ,user);
+            case ADMIN,MANAGER -> myTasks = taskRepository.findAllByProject(project);
+            case null -> throw new InvalidUserRoleException("Wrong role, something went wrong");
+        }
+
+        myTasks.forEach( task -> {
+            myTasksToReturn.add(taskMapper.toResponse(task));
+        });
+        return ResponseEntity.ok(myTasksToReturn);
+    }
 
 
 

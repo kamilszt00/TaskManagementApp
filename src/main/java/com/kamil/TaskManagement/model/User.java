@@ -44,4 +44,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasks = new HashSet<>();
 
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }
