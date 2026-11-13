@@ -27,9 +27,9 @@ public class ProjectController {
         return projectService.createProject(request);
 
     }
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN','EMPLOYEE')")
+    @PreAuthorize("@projectSecurity.isManager(#id,authentication) or @projectSecurity.isAssignee(#id,authentication) or hasAuthority('ADMIN')")
     @GetMapping("/project/{id}")
-    public ResponseEntity<ProjectResponse> getProject(@PathVariable Integer id) {
+    public ResponseEntity<ProjectSummary> getProject(@PathVariable Integer id) {
         return projectService.getProject(id);
 
     }

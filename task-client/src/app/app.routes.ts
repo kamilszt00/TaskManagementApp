@@ -4,6 +4,8 @@ import { TaskList} from './task-list/task-list';
 import {authGuard} from './auth-guard';
 import {TaskDetails} from './task-details/task-details';
 import {TaskCreate} from './task-create/task-create';
+import {ProjectList} from './project-list/project-list';
+import {ProjectDetails} from './project-details/project-details';
 
 
 export const routes: Routes = [
@@ -20,7 +22,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'tasks',
+    redirectTo: 'projects',
     pathMatch: 'full'
   },
   {
@@ -35,5 +37,17 @@ export const routes: Routes = [
     component: TaskDetails,
     canActivate: [authGuard]
   },
+  {
+    path:'projects',
+    title:'Your projects',
+    component: ProjectList,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'projects/:id',
+    title: 'Project details',
+    component: ProjectDetails,
+    canActivate: [authGuard]
+  }
 
 ];

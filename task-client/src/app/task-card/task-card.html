@@ -1,0 +1,17 @@
+
+<mat-card class="task-card"
+          [class.todo]="task().status === 'TODO'"
+          [class.in-progress]="task().status === 'IN_PROGRESS'"
+          [class.completed]="task().status === 'COMPLETED'">
+  <mat-card-content class="task-row">
+    <div class="task-info">
+      <a [routerLink]="['/tasks', task().id]">{{task().title}}</a>
+      <span class="status">{{task().status}}</span>
+    </div>
+    @if (task().status === "IN_PROGRESS") {
+      <button mat-raised-button class="btn btn-complete" (click)="taskService.complete(task().id)">Complete</button>
+    } @else if (task().status === "TODO") {
+      <button mat-raised-button class="btn btn-start" (click)="taskService.start(task().id)">Start</button>
+    }
+  </mat-card-content>
+</mat-card>

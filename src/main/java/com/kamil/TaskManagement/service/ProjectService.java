@@ -48,10 +48,10 @@ public class ProjectService {
                 .status(HttpStatusCode.valueOf(201))
                 .body(projectResponse);
     }
-    public ResponseEntity<ProjectResponse> getProject(Integer id) {
+    public ResponseEntity<ProjectSummary> getProject(Integer id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
-        return ResponseEntity.ok(projectMapper.toResponse(project));
+        return ResponseEntity.ok(projectMapper.toResponseSummary(project));
     }
 
     public ResponseEntity<ProjectResponse> updateProject(CreateProjectRequest request, Integer id) {

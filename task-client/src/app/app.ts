@@ -4,9 +4,10 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {TaskService} from './task.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
-  imports: [RouterOutlet, MatToolbarRow, MatButton, MatToolbar, RouterLink, MatIconButton],
+  imports: [RouterOutlet, MatToolbarRow, MatButton, MatToolbar, RouterLink, MatIconButton, MatIcon],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

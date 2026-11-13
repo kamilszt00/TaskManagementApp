@@ -4,9 +4,11 @@
       <h3>TMapp</h3>
       <span class="spacer"></span>
       <button mat-button routerLink="/tasks">Task List</button>
+      <button mat-button routerLink="/projects">My Projects</button>
       @if (authService.token()) {
-        <button mat-icon-button (click)="logout()">logout</button>
-        {{authService.role()}}
+        <button mat-icon-button (click)="logout()" aria-label="Logout">
+          <mat-icon>logout</mat-icon>
+        </button>
       }
     </mat-toolbar-row>
   </mat-toolbar>

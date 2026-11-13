@@ -1,0 +1,18 @@
+<p>project-details works!</p>
+
+@if (projectService.selectedProject(); as project) {
+  <mat-card>
+    <mat-card-header>
+      <p>{{project.name}}</p>
+      <p>{{project.id}}</p>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{project.description}}</p>
+      <p>{{project.managerID}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  @for (task of taskService.tasks(); track task.id) {
+    <app-task-card [task]="task"/>
+  }
+}

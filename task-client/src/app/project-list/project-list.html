@@ -1,0 +1,11 @@
+<p>My project list</p>
+
+@for (project of projectService.projects(); track project.id) {
+  <a [routerLink]="['/projects',project.id]">
+    <mat-card>
+      <mat-card-content>
+        {{project.name}} || {{project.description}}
+      </mat-card-content>
+    </mat-card>
+  </a>
+}

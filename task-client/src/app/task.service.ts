@@ -10,8 +10,6 @@ export class TaskService {
   router = inject(Router);
   errorMessage = signal<string | null>(null);
   selectedTask = signal<Task | null>(null);
-
-
   tasks = signal<Task[]>([]);
 
   start(id : number) {
@@ -37,7 +35,7 @@ export class TaskService {
         this.tasks.set(tasks);
         this.errorMessage.set(null);
       },
-      error: err => this.errorMessage.set("Could not load Tasks"),    });
+      error: () => this.errorMessage.set("Could not load Tasks"),    });
   }
 
   loadTask(id : number) {
@@ -51,6 +49,15 @@ export class TaskService {
     this.httpClient.post(`${environment.apiUrl}/task`,request).subscribe({
       next:() => this.router.navigate(['/tasks']),
 
+    })
+  }
+  loadProjectTasks(projectId : number) {
+    this.httpClient.get<Task[]>(`${environment.apiUrl}/project/${projectId}/tasks`).subscribe({
+      next: tasks => {
+        this.tasks.set(tasks);
+        this.errorMessage.set(null);
+      },
+      error: () => this.errorMessage.set("Could not load the tasks")
     })
   }
 

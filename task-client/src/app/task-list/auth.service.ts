@@ -33,7 +33,7 @@ export class AuthService {
         this.token.set(token);
         localStorage.setItem(this.TOKEN_KEY,token)
         this.errorMessage.set(null);
-        this.router.navigate(['/tasks'])
+        this.router.navigate(['/projects'])
       },
       error: err => this.errorMessage.set("Invalid username or password" + " | " + err.status),
     });
