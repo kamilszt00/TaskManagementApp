@@ -46,7 +46,7 @@ public class ProjectController {
     }
 
 
-    //FIX THAT
+
     @PreAuthorize("@projectSecurity.isManager(#id,authentication) or hasAuthority('ADMIN')")
     @PostMapping("/project/{id}/assignees")
     public ResponseEntity<Void> addAssigneesToProject(@PathVariable Integer id,@RequestBody AssigneesRequest request) {

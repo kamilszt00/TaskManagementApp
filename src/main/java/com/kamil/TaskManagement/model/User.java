@@ -44,6 +44,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasks = new HashSet<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private Set<Comment> comments = new HashSet<>();
+
 
     @Override
     public boolean equals(Object obj) {

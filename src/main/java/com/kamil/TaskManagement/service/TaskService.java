@@ -1,21 +1,16 @@
 package com.kamil.TaskManagement.service;
 
 
-import com.kamil.TaskManagement.DTO.CreateTaskRequest;
-import com.kamil.TaskManagement.DTO.TaskResponse;
-import com.kamil.TaskManagement.DTO.UpdateTaskRequest;
+import com.kamil.TaskManagement.DTO.*;
 import com.kamil.TaskManagement.exception.InvalidTaskStateException;
+import com.kamil.TaskManagement.mapper.CommentMapper;
 import com.kamil.TaskManagement.mapper.TaskMapper;
-import com.kamil.TaskManagement.model.Task;
-import com.kamil.TaskManagement.model.TaskStatus;
-import com.kamil.TaskManagement.model.User;
-import com.kamil.TaskManagement.repository.ProjectRepository;
-import com.kamil.TaskManagement.repository.TagRepository;
-import com.kamil.TaskManagement.repository.TaskRepository;
-import com.kamil.TaskManagement.repository.UserRepository;
+import com.kamil.TaskManagement.model.*;
+import com.kamil.TaskManagement.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,6 +27,8 @@ public class TaskService {
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
+    private final CommentMapper commentMapper;
+    private final CommentRepository commentRepository;
 
     public ResponseEntity<TaskResponse> createTask(CreateTaskRequest request) {
         Task task = taskMapper.toRequest(request);
@@ -105,4 +102,24 @@ public class TaskService {
         List<TaskResponse> taskResponses = taskMapper.toResponseList(allTasks);
         return ResponseEntity.ok(taskResponses);
     }
+
+    public ResponseEntity<CommentResponse> createCommentToTask(Integer task_id, CreateCommentRequest request, UserPrincipal userPrincipal) {
+        Comment comment = commentMapper.toRequest(request);
+        comment.setAuthor(userPrincipal.getUser());
+        comment.setTask(taskRepository.findById(task_id).orElseThrow(() -> new EntityNotFoundException(("Task not found"))));
+        return ResponseEntity
+                .status(HttpStatusCode.valueOf(201))
+                .body(commentMapper.toResponse(commentRepository.save(comment)));
+    }
+
+    public ResponseEntity<List<CommentResponse>> getCommentsToTask(Integer task_id) {
+        Task task = taskRepository.findById(task_id).orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        List<Comment> comments = commentRepository.findByTask_IdOrderByCreatedAtAsc(task.getId());
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        comments.forEach(comment -> {
+            commentResponses.add(commentMapper.toResponse(comment));
+        });
+        return ResponseEntity.ok(commentResponses);
+    }
+
 }

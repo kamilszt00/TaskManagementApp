@@ -44,4 +44,8 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
 }
