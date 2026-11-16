@@ -1,18 +1,88 @@
-<p>project-details works!</p>
+<h2>Project details</h2>
+
+@if (projectService.errorMessage(); as error) {
+  <p class="project-error">{{ error }}</p>
+}
 
 @if (projectService.selectedProject(); as project) {
-  <mat-card>
-    <mat-card-header>
-      <p>{{project.name}}</p>
-      <p>{{project.id}}</p>
+  <mat-card class="project-card">
+    <mat-card-header class="project-header">
+      <mat-icon class="project-icon">folder</mat-icon>
+      <b class="project-name">{{ project.name }}</b>
     </mat-card-header>
     <mat-card-content>
-      <p>{{project.description}}</p>
-      <p>{{project.managerID}}</p>
+      @if (project.description) {
+        <p class="project-description">{{ project.description }}</p>
+      }
+      <dl>
+        <dt>Project ID</dt> <dd>{{ project.id }}</dd>
+        <dt>Manager ID</dt> <dd>{{ project.managerID }}</dd>
+      </dl>
     </mat-card-content>
   </mat-card>
 
+<!--  Here-->
+  @if (canManage()) {
+    <mat-card class="members-card">
+      <mat-card-header>
+        <mat-card-title class="members-title">
+          <mat-icon>group</mat-icon>
+          Members ({{ projectService.members().length }})
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="member-list">
+          @for (user of projectService.members(); track user.id) {
+            <li class="member-row">
+              <mat-icon class="member-avatar">account_circle</mat-icon>
+              <span class="member-name">{{ user.username }}</span>
+              <button mat-icon-button class="member-remove"
+                      (click)="projectService.removeMembers(projectId, user.id)" aria-label="Remove member">
+                <mat-icon>person_remove</mat-icon>
+              </button>
+            </li>
+          } @empty {
+            <li class="members-empty">No members yet</li>
+          }
+        </ul>
+
+        <div class="add-member">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Add employee</mat-label>
+            <mat-select [formControl]="selectedEmployee">
+              @for (employee of availableEmployees(); track employee.id) {
+                <mat-option [value]="employee.id">{{ employee.username }}</mat-option>
+              } @empty {
+                <mat-option disabled>No employees left to add</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <button mat-flat-button (click)="onAddMember()" [disabled]="selectedEmployee.value === null">
+            <mat-icon>person_add</mat-icon>
+            Add
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+<!--  Here-->
+  <div class="tasks-left">
+    <span class="tasks-left-label">Tasks left</span>
+    <span class="tasks-left-count">{{ taskService.tasksLeft() }} / {{ taskService.tasks().length }}</span>
+  </div>
+
+  @if (taskService.errorMessage(); as error) {
+    <p class="project-error">{{ error }}</p>
+  }
+
   @for (task of taskService.tasks(); track task.id) {
     <app-task-card [task]="task"/>
+  } @empty {
+    @if (!taskService.errorMessage()) {
+      <p class="tasks-empty">No tasks in this project for you yet.</p>
+    }
   }
+
+  <button mat-stroked-button routerLink="/projects">Back to projects</button>
 }

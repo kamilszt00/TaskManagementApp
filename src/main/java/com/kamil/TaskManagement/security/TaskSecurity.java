@@ -10,6 +10,7 @@ import com.kamil.TaskManagement.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -26,6 +27,14 @@ public class TaskSecurity {
             return task.getProject().getManager().getId().equals(user.getId());
         }
         return task.getUser().getId().equals(user.getId());
+    }
+
+    public boolean isManager(Integer taskId, Authentication authentication) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException(("Task not found")));
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        User user = userPrincipal.getUser();
+        return task.getProject().getManager().getId().equals(user.getId());
     }
 
 

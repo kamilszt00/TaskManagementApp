@@ -32,9 +32,58 @@
     </mat-card-content>
   </mat-card>
 
+  <mat-card class="comments-card">
+    <mat-card-header>
+      <mat-card-title class="comments-title">
+        <mat-icon>forum</mat-icon>
+        Comments ({{ commentService.comments().length }})
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (commentService.errorMessage(); as error) {
+        <p class="comment-error">{{ error }}</p>
+      }
 
+      <ul class="comment-list">
+        @for (comment of commentService.comments(); track comment.id) {
+          <li class="comment">
+            <mat-icon class="comment-avatar">account_circle</mat-icon>
+            <div class="comment-body">
+              <div class="comment-meta">
+                <span class="comment-author">{{ comment.authorUsername }}</span>
+                <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+              </div>
+              <p class="comment-content">{{ comment.content }}</p>
+            </div>
+          </li>
+        } @empty {
+          <li class="comment-empty">No comments yet. Be the first to comment.</li>
+        }
+      </ul>
 
-  <button mat-flat-button routerLink="/tasks">Back to list</button>
+      <form class="comment-form" [formGroup]="commentForm" #formDirective="ngForm"
+            (ngSubmit)="onSubmit(formDirective)">
+        <mat-form-field appearance="outline">
+          <mat-label>Add a comment</mat-label>
+          <textarea matInput formControlName="content" rows="3"></textarea>
+          <mat-hint align="end">
+            {{ commentForm.controls.content.value.length }} / {{ maxCommentLength }}
+          </mat-hint>
+          @if (commentForm.controls.content.hasError('required')) {
+            <mat-error>Comment cannot be empty</mat-error>
+          } @else if (commentForm.controls.content.hasError('maxlength')) {
+            <mat-error>Comment cannot be longer than {{ maxCommentLength }} characters</mat-error>
+          }
+        </mat-form-field>
+        <button mat-flat-button type="submit" class="comment-submit" [disabled]="commentForm.invalid">
+          <mat-icon>send</mat-icon>
+          Add comment
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <button mat-stroked-button routerLink="/tasks">Back to list</button>
 }
 
 

@@ -33,9 +33,9 @@ public class ProjectController {
         return projectService.getProject(id);
 
     }
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
-    @PutMapping("/project/{id}")
-    public ResponseEntity<ProjectResponse> putProject(@Valid @RequestBody CreateProjectRequest request, @PathVariable Integer id) {
+    @PreAuthorize("@projectSecurity.isManager(#id,authentication) or hasAuthority('ADMIN')")
+    @PatchMapping("/project/{id}")
+    public ResponseEntity<ProjectResponse> updateProject(@Valid @RequestBody UpdateProjectRequest request, @PathVariable Integer id) {
         return projectService.updateProject(request, id);
     }
 
@@ -70,5 +70,14 @@ public class ProjectController {
     public ResponseEntity<List<TaskResponse>> getMyTasksPerProject(@PathVariable Integer project_id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return projectService.getMyTasksPerProject(project_id, userPrincipal);
     }
+
+    @PreAuthorize("@projectSecurity.isManager(#project_id,authentication) or hasAuthority('ADMIN')")
+    @GetMapping("/project/{project_id}/assignees")
+    public ResponseEntity<List<UsersSummary>> getAssigneesOfProject(@PathVariable Integer project_id) {
+        return projectService.getAssigneesOfProject(project_id);
+    }
+
+
+
 
 }

@@ -3,8 +3,10 @@ package com.kamil.TaskManagement.service;
 
 import com.kamil.TaskManagement.DTO.CreateUserRequest;
 import com.kamil.TaskManagement.DTO.UserResponse;
+import com.kamil.TaskManagement.DTO.UsersSummary;
 import com.kamil.TaskManagement.mapper.UserMapper;
 import com.kamil.TaskManagement.model.User;
+import com.kamil.TaskManagement.model.UserRole;
 import com.kamil.TaskManagement.repository.TaskRepository;
 import com.kamil.TaskManagement.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,5 +54,15 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
             userRepository.delete(user);
             return ResponseEntity.noContent().build();
+    }
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public ResponseEntity<List<UsersSummary>> getUsersByRole(UserRole userRole) {
+        List<User> allAssignees = userRepository.findByRoleOrderByUsernameAsc(userRole);
+        List<UsersSummary> assignees = allAssignees.stream()
+                .map(userMapper::toSummary)
+                .sorted(Comparator.comparing(UsersSummary::getUsername))
+                .toList();
+        return ResponseEntity.ok(assignees);
     }
 }

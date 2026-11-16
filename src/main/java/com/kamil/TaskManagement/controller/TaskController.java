@@ -6,7 +6,6 @@ import com.kamil.TaskManagement.model.UserPrincipal;
 import com.kamil.TaskManagement.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +20,7 @@ public class TaskController {
     private final TaskService taskService;
 
 
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("@projectSecurity.isManager(#request.projectID,authentication) or hasAuthority('ADMIN')")
     @PostMapping("/task")
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody CreateTaskRequest request) {
         return taskService.createTask(request);
@@ -31,18 +30,17 @@ public class TaskController {
     public ResponseEntity<TaskResponse> getTask(@PathVariable Integer id) {
         return taskService.getTask(id);
     }
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/task/all")
     public ResponseEntity<List<TaskResponse>> getAllTasks() {
         return taskService.getAllTasks();
     }
-
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("@taskSecurity.isManager(#id,authentication) or hasAuthority('ADMIN')")
     @PutMapping("/task/{id}")
     public ResponseEntity<TaskResponse> putTask(@Valid @RequestBody UpdateTaskRequest request, @PathVariable Integer id) {
         return taskService.updateTask(request, id);
     }
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("@taskSecurity.isManager(#id,authentication) or hasAuthority('ADMIN')")
     @DeleteMapping("/task/{id}")
     public ResponseEntity<TaskResponse> deleteTask(@PathVariable Integer id) {
         return taskService.deleteTask(id);
@@ -54,9 +52,9 @@ public class TaskController {
     @PatchMapping("task/{id}/complete")
     public ResponseEntity<TaskResponse> completeTask(@PathVariable Integer id) {return taskService.completeTask(id);}
     @GetMapping("task/overdue")
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<TaskResponse>> getOverdueTask() {return taskService.getOverdueTask();}
-    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    @PreAuthorize("@taskSecurity.isManager(#id,authentication) or hasAuthority('ADMIN')")
     @PatchMapping("task/{id}/reassign")
     public ResponseEntity<TaskResponse> reassignTask(@PathVariable Integer id, @RequestParam Integer userId) {
         return taskService.reassignTask(id, userId);

@@ -1,11 +1,31 @@
-<p>My project list</p>
+<section>
+  <div class="projects-header">
+    <span class="projects-header-label">My projects</span>
+    <span class="projects-header-count">{{ projectService.projects().length }}</span>
+  </div>
 
-@for (project of projectService.projects(); track project.id) {
-  <a [routerLink]="['/projects',project.id]">
-    <mat-card>
-      <mat-card-content>
-        {{project.name}} || {{project.description}}
-      </mat-card-content>
-    </mat-card>
-  </a>
-}
+  @if (projectService.errorMessage(); as error) {
+    <p class="project-error">{{ error }}</p>
+  }
+
+  @for (project of projectService.projects(); track project.id) {
+    <a class="project-link" [routerLink]="['/projects', project.id]">
+      <mat-card class="project-card">
+        <mat-card-content class="project-row">
+          <mat-icon class="project-icon">folder</mat-icon>
+          <div class="project-info">
+            <span class="project-name">{{ project.name }}</span>
+            @if (project.description) {
+              <span class="project-description">{{ project.description }}</span>
+            }
+          </div>
+          <mat-icon class="project-chevron">chevron_right</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  } @empty {
+    @if (!projectService.errorMessage()) {
+      <p class="project-empty">You are not part of any project yet.</p>
+    }
+  }
+</section>

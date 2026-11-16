@@ -1,15 +1,16 @@
 import {Component, inject, signal} from '@angular/core';
 import {AuthService} from './task-list/auth.service';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatToolbar, MatToolbarRow} from '@angular/material/toolbar';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {TaskService} from './task.service';
 import {MatIcon} from '@angular/material/icon';
 import {ProjectService} from './project.service';
 import {CommentService} from './comment.service';
+import {UserService} from './userService';
 
 @Component({
-  imports: [RouterOutlet, MatToolbarRow, MatButton, MatToolbar, RouterLink, MatIconButton, MatIcon],
+  imports: [RouterOutlet, MatToolbarRow, MatButton, MatToolbar, RouterLink, RouterLinkActive, MatIconButton, MatIcon],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
@@ -20,6 +21,7 @@ export class App {
   protected readonly taskService = inject(TaskService);
   protected readonly projectService = inject(ProjectService);
   protected readonly commentService = inject(CommentService);
+  protected readonly userService = inject(UserService);
 
 
   logout() {
@@ -27,5 +29,6 @@ export class App {
     this.taskService.clear();
     this.projectService.clear();
     this.commentService.clear();
+    this.userService.clear();
   }
 }

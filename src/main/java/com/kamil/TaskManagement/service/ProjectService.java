@@ -7,6 +7,7 @@ import com.kamil.TaskManagement.exception.ArgumentsEqualException;
 import com.kamil.TaskManagement.exception.InvalidUserRoleException;
 import com.kamil.TaskManagement.mapper.ProjectMapper;
 import com.kamil.TaskManagement.mapper.TaskMapper;
+import com.kamil.TaskManagement.mapper.UserMapper;
 import com.kamil.TaskManagement.model.*;
 import com.kamil.TaskManagement.repository.ProjectRepository;
 import com.kamil.TaskManagement.repository.TaskRepository;
@@ -18,10 +19,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -32,6 +30,7 @@ public class ProjectService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
+    private final UserMapper userMapper;
 
 
     public ResponseEntity<ProjectResponse> createProject(CreateProjectRequest request) {
@@ -53,13 +52,13 @@ public class ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
         return ResponseEntity.ok(projectMapper.toResponseSummary(project));
     }
-
-    public ResponseEntity<ProjectResponse> updateProject(CreateProjectRequest request, Integer id) {
+    @Transactional
+    public ResponseEntity<ProjectResponse> updateProject(UpdateProjectRequest request, Integer id) {
             Project projectToUpdate = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
-            Project project = projectMapper.toRequest(request);
-            project.setId(projectToUpdate.getId());
-            return ResponseEntity.ok(projectMapper.toResponse(projectRepository.save(project)));
+            if(request.getName() != null) projectToUpdate.setName(request.getName());
+            if(request.getDescription() != null) projectToUpdate.setDescription(request.getDescription());
+        return ResponseEntity.ok(projectMapper.toResponse(projectToUpdate));
     }
     @Transactional
     public ResponseEntity<ProjectResponse> deleteProject(Integer projectToDeleteId, Integer projectToReassignId) {
@@ -136,6 +135,21 @@ public class ProjectService {
         });
         return ResponseEntity.ok(myTasksToReturn);
     }
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public ResponseEntity<List<UsersSummary>> getAssigneesOfProject(Integer id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        Set<User> usersOfProject = project.getAssignees();
+        List<UsersSummary> assignees = usersOfProject.stream()
+                .map(userMapper::toSummary)
+                .sorted(Comparator.comparing(UsersSummary::getUsername))
+                .toList();
+        return ResponseEntity.ok(assignees);
+
+    }
+
+
 
 
 

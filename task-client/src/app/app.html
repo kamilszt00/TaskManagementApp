@@ -1,10 +1,12 @@
 <header>
   <mat-toolbar>
     <mat-toolbar-row>
-      <h3>TMapp</h3>
+      <a class="logo-link" routerLink="/tasks" aria-label="TMapp home">
+        <img class="logo" src="icons/mark.svg" alt="TMapp" />
+      </a>
       <span class="spacer"></span>
-      <button mat-button routerLink="/tasks">Task List</button>
-      <button mat-button routerLink="/projects">My Projects</button>
+      <button mat-button routerLink="/projects" routerLinkActive="active-link">My Projects</button>
+      <button mat-button routerLink="/tasks" routerLinkActive="active-link">Task List</button>
       @if (authService.token()) {
         <button mat-icon-button (click)="logout()" aria-label="Logout">
           <mat-icon>logout</mat-icon>

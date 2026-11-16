@@ -4,6 +4,7 @@ package com.kamil.TaskManagement.mapper;
 
 import com.kamil.TaskManagement.DTO.CreateUserRequest;
 import com.kamil.TaskManagement.DTO.UserResponse;
+import com.kamil.TaskManagement.DTO.UsersSummary;
 import com.kamil.TaskManagement.model.Task;
 import com.kamil.TaskManagement.model.User;
 import org.mapstruct.Mapper;
@@ -22,6 +23,8 @@ public interface UserMapper {
     default String taskToName(Task task) {
         return task.getTitle();
     }
+
+    UsersSummary toSummary(User user);
 
 
 }

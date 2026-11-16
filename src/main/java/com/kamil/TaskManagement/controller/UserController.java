@@ -3,7 +3,9 @@ package com.kamil.TaskManagement.controller;
 
 import com.kamil.TaskManagement.DTO.CreateUserRequest;
 import com.kamil.TaskManagement.DTO.UserResponse;
+import com.kamil.TaskManagement.DTO.UsersSummary;
 import com.kamil.TaskManagement.model.User;
+import com.kamil.TaskManagement.model.UserRole;
 import com.kamil.TaskManagement.repository.UserRepository;
 import com.kamil.TaskManagement.service.UserService;
 import jakarta.validation.Valid;
@@ -44,7 +46,11 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('MANAGER') and #userRole.name() == 'EMPLOYEE')")
+    @GetMapping("/user")
+    public ResponseEntity<List<UsersSummary>> getUsersByRole(@RequestParam("role") UserRole userRole) {
+        return userService.getUsersByRole(userRole);
+    }
 
 
 
