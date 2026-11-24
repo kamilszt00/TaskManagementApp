@@ -6,6 +6,7 @@ import {TaskDetails} from './task-details/task-details';
 import {TaskCreate} from './task-create/task-create';
 import {ProjectList} from './project-list/project-list';
 import {ProjectDetails} from './project-details/project-details';
+import {adminGuard} from './role-guard';
 
 
 export const routes: Routes = [
@@ -18,7 +19,7 @@ export const routes: Routes = [
     path: 'tasks',
     title: 'Task list page',
     component: TaskList,
-    canActivate: [authGuard]
+    canActivate: [authGuard,adminGuard]
   },
   {
     path: '',
