@@ -1,7 +1,6 @@
 import {computed, inject, Service, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Router} from '@angular/router';
-import {TaskService} from '../task.service';
 import {environment} from '../../environments/environment';
 import {Role} from './auth.model';
 
@@ -12,6 +11,8 @@ export class AuthService {
   router = inject(Router);
   errorMessage = signal<string | null>(null);
   token = signal<string | null>(localStorage.getItem(this.TOKEN_KEY));
+
+
   role = computed(()=> {
     const token = this.token();
     if (!token) {
@@ -26,6 +27,8 @@ export class AuthService {
 
     return data.role as Role;
   })
+  canManage = computed(() => this.role() === 'MANAGER' || this.role() === 'ADMIN');
+  isAdmin = computed(() => this.role() === 'ADMIN');
 
   login(credentials : {username: string ;password : string}) {
     this.httpClient.post(`${environment.apiUrl}/authenticate`,credentials,{ responseType: 'text' }).subscribe({

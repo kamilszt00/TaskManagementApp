@@ -22,7 +22,7 @@
   </mat-card>
 
 <!--  Here-->
-  @if (canManage()) {
+  @if (authService.canManage()) {
     <mat-card class="members-card">
       <mat-card-header>
         <mat-card-title class="members-title">

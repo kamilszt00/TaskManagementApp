@@ -40,7 +40,6 @@ export class ProjectDetails {
   authService = inject(AuthService);
   userService = inject(UserService);
 
-  canManage = computed(() => this.authService.role() === 'MANAGER' || this.authService.role() === 'ADMIN');
   availableEmployees = computed(() =>
     this.userService.employees().filter(e => !this.projectService.members().some(m => m.id === e.id))
 
@@ -52,7 +51,7 @@ export class ProjectDetails {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.projectService.loadProject(id);
     this.taskService.loadProjectTasks(id);
-    if (this.canManage()) {
+    if (this.authService.canManage()) {
       this.userService.loadEmployees();
       this.projectService.loadMembers(id);
     }
