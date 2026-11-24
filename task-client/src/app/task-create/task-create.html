@@ -25,18 +25,26 @@
       <input type="datetime-local" formControlName="dueDate" matInput required/>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Assignee ID</mat-label>
-      <input type="number" formControlName="assigneeID" matInput required/>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Project ID</mat-label>
-        <input type="number" formControlName="projectID" matInput required/>
+      <mat-label>Assignee</mat-label>
+      <mat-select formControlName="assigneeID">
+        @for (assignee of projectService.members(); track assignee.id) {
+          <mat-option [value]="assignee.id">{{ assignee.username }}</mat-option>
+        } @empty {
+          <mat-option disabled>No members in this project</mat-option>
+        }
+      </mat-select>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Tags IDs, e.g 1,2</mat-label>
       <input type="text" formControlName="tagsID" matInput required/>
     </mat-form-field>
-    <button mat-flat-button [disabled]="!taskCreateForm.valid">Create task</button>
-    <button mat-flat-button routerLink="/tasks">Cancel</button>
+    @if (taskService.errorMessage(); as error) {
+      <p class="form-error">{{ error }}</p>
+    }
+    <button type="submit" mat-flat-button class="form-button" [disabled]="!taskCreateForm.valid">
+      <mat-icon>add</mat-icon>
+      Create task
+    </button>
+    <button type="button" mat-stroked-button class="form-button" [routerLink]="['/projects', projectId]">Cancel</button>
   </form>
 </div>

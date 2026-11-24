@@ -28,3 +28,10 @@ mat-form-field {
   width: 100%;
 }
 
+/* Dialogs get the same corners and title size as the cards. The dialog frame is drawn by
+   Material outside our components, so it can only be styled from this global file */
+mat-dialog-container {
+  --mat-dialog-container-shape: 12px;
+  --mat-dialog-subhead-size: 18px;
+  --mat-dialog-subhead-weight: 600;
+}

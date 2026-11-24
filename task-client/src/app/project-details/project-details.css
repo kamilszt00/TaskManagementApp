@@ -71,6 +71,13 @@ dd {
   text-align: center;
 }
 
+/* New task (managers and admins only) */
+.new-task {
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 16px;
+}
+
 .tasks-empty {
   padding: 16px 0;
   text-align: center;

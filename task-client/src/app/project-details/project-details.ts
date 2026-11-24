@@ -11,6 +11,9 @@ import {UserService} from '../userService';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {MatDialog} from '@angular/material/dialog';
+import {User} from '../user.model';
+import {ConfirmDialog} from '../confirm-dialog/confirm-dialog';
 
 @Component({
   imports: [
@@ -39,6 +42,7 @@ export class ProjectDetails {
   taskService = inject(TaskService)
   authService = inject(AuthService);
   userService = inject(UserService);
+  dialog = inject(MatDialog);
 
   availableEmployees = computed(() =>
     this.userService.employees().filter(e => !this.projectService.members().some(m => m.id === e.id))
@@ -56,7 +60,15 @@ export class ProjectDetails {
       this.projectService.loadMembers(id);
     }
   }
-
+  onRemoveMember(user : User) {
+      this.dialog.open(ConfirmDialog, {
+        data : { title: "Remove user", message: `Do you want to remove ${user.username} from this project?`}
+      }).afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+          this.projectService.removeMembers(this.projectId, user.id);
+        }
+      })
+  }
 
   onAddMember() {
     const userId = this.selectedEmployee.value;

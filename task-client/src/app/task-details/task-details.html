@@ -83,7 +83,7 @@
     </mat-card-content>
   </mat-card>
 
-  <button mat-stroked-button routerLink="/tasks">Back to list</button>
+  <button mat-stroked-button [routerLink]="['/projects', task.projectID]">Back to list</button>
 }
 
 

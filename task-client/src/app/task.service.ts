@@ -47,7 +47,11 @@ export class TaskService {
 
   createTaskRequest(request : CreateTaskRequest) {
     this.httpClient.post(`${environment.apiUrl}/task`,request).subscribe({
-      next:() => this.router.navigate(['/tasks']),
+      next:() => {
+        this.router.navigate(['/projects', request.projectID]);
+        this.errorMessage.set(null);
+      },
+      error: () => this.errorMessage.set("Cannot create task")
 
     })
   }

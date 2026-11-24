@@ -37,7 +37,7 @@
               <mat-icon class="member-avatar">account_circle</mat-icon>
               <span class="member-name">{{ user.username }}</span>
               <button mat-icon-button class="member-remove"
-                      (click)="projectService.removeMembers(projectId, user.id)" aria-label="Remove member">
+                      (click)="onRemoveMember(user)" aria-label="Remove member">
                 <mat-icon>person_remove</mat-icon>
               </button>
             </li>
@@ -71,6 +71,13 @@
     <span class="tasks-left-label">Tasks left</span>
     <span class="tasks-left-count">{{ taskService.tasksLeft() }} / {{ taskService.tasks().length }}</span>
   </div>
+
+  @if (authService.canManage()) {
+    <button mat-flat-button class="new-task" routerLink="/tasks/new" [queryParams]="{projectId: project.id}">
+      <mat-icon>add</mat-icon>
+      New task
+    </button>
+  }
 
   @if (taskService.errorMessage(); as error) {
     <p class="project-error">{{ error }}</p>
