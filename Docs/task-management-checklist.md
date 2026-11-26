@@ -1,6 +1,30 @@
 # Task Management App: Remaining Work
 
-Group A is required for the end-of-month version. Group B makes it solid. Group C can wait for the final thesis version (May 2027).
+Part 1 is what the frontend needs to work for all three roles. Part 2 is everything else, grouped by the original priority.
+
+# Part 1: Essential for a functional frontend
+
+### Manager frontend
+- [ ] "New task" leftover: reset the old error message when the form opens
+- [ ] Task details: delete (with a confirmation dialog)
+- [ ] Task details: reassign (dropdown of project members)
+- [ ] Task details: edit
+- [ ] Edit project: name and description
+
+### Admin frontend
+- [ ] Users page: list users (admin only, with a Users link in the toolbar)
+- [ ] Users page: create user (username, email, password, role)
+- [ ] Users page: delete user
+- [ ] Create project: name, description, manager dropdown (`GET /user?role=MANAGER`)
+- [ ] Delete project, with confirmation
+- [ ] Merge projects, with confirmation
+
+### Needed on the phone
+- [ ] Add `/projects` and `/projects/**`, and the new `/users` page, to `permitAll()` and to `WebController`'s `@GetMapping`
+
+---
+
+# Part 2: The rest
 
 ## A. Must have for the deadline
 
@@ -15,26 +39,7 @@ Group A is required for the end-of-month version. Group B makes it solid. Group 
 - [ ] `GET /user/{id}`: restrict access (any logged-in user can read any user's email and task titles)
 - [ ] `createProject`: remove the duplicate manager lookup (`getReferenceById` + `findById`)
 
-### Manager frontend
-- [ ] "New task" from the project page (project from the query parameter, assignee dropdown of project members, navigate back to the project afterward)
-- [ ] Task details: edit
-- [ ] Task details: reassign (dropdown of project members)
-- [ ] Task details: delete (with a confirmation dialog)
-- [ ] Edit project: name and description
-
-### Admin frontend
-- [ ] Users page: list users
-- [ ] Users page: create user (username, email, password, role)
-- [ ] Users page: delete user
-- [ ] Create project: name, description, manager dropdown (`GET /user?role=MANAGER`)
-- [ ] Delete project, with confirmation
-- [ ] Merge projects, with confirmation
-- [ ] Toolbar links per role
-- [ ] Role guard for the admin pages
-
 ### Running on the phone
-- [ ] Add `/projects` and `/projects/**` to `permitAll()` and to `WebController`'s `@GetMapping`, if not done yet
-- [ ] Check that every service imports `environment` from `environments/environment`, never from `environment.development`
 - [ ] Full test on the phone through `deploy.sh` and a tunnel, with all three roles
 - [ ] Demo setup:
   - [ ] Test accounts for employee, manager, and admin
@@ -52,7 +57,6 @@ Group A is required for the end-of-month version. Group B makes it solid. Group 
 - [ ] Footer at the bottom of the screen
 - [ ] Check every page in the phone-sized device toolbar
 - [ ] Remove debug leftovers ("Logged in" text, `console.log` calls)
-- [ ] Remove the old all-tasks page, or make it admin-only
 - [ ] Commit and push both projects to Git
 
 ## C. For the final thesis version

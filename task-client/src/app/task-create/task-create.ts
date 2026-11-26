@@ -31,6 +31,10 @@ export class TaskCreate {
     tagsID: new FormControl('',{nonNullable: true, validators: Validators.required})
 
   })
+  constructor() {
+    this.projectService.loadMembers(this.projectId);
+    this.taskService.errorMessage.set(null);
+  }
   onSubmit() {
     const createTaskForm = this.taskCreateForm.getRawValue();
     const request: CreateTaskRequest = {
@@ -39,9 +43,7 @@ export class TaskCreate {
     };
     this.taskService.createTaskRequest(request);
   }
-  constructor() {
-    this.projectService.loadMembers(this.projectId);
-  }
+
 }
 
 
