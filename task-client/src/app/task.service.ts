@@ -55,6 +55,18 @@ export class TaskService {
 
     })
   }
+  deleteTask(id:number) {
+    const projectId = this.selectedTask()?.projectID;
+    if (!projectId) return;
+    this.httpClient.delete(`${environment.apiUrl}/task/${id}`).subscribe({
+      next:() => {
+        this.router.navigate(['/projects', projectId]);
+        this.errorMessage.set(null);
+        this.selectedTask.set(null);
+      },
+      error: () => this.errorMessage.set("Cannot delete the task")
+    })
+  }
   loadProjectTasks(projectId : number) {
     this.httpClient.get<Task[]>(`${environment.apiUrl}/project/${projectId}/tasks`).subscribe({
       next: tasks => {

@@ -83,7 +83,14 @@
     </mat-card-content>
   </mat-card>
 
+  @if (taskService.errorMessage(); as error) {
+    <p class="task-error">{{ error }}</p>
+  }
+
   <button mat-stroked-button [routerLink]="['/projects', task.projectID]">Back to list</button>
+  @if (authService.canManage()) {
+    <button type="button" mat-stroked-button (click)="onDelete()">Delete</button>
+  }
 }
 
 

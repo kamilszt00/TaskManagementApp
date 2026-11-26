@@ -8,6 +8,9 @@ import {CommentService} from '../comment.service';
 import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatHint, MatInput, MatLabel} from '@angular/material/input';
+import {AuthService} from '../task-list/auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialog} from '../confirm-dialog/confirm-dialog';
 
 @Component({
   imports: [
@@ -31,6 +34,8 @@ export class TaskDetails {
   taskService = inject(TaskService);
   route = inject(ActivatedRoute);
   commentService = inject(CommentService);
+  authService = inject(AuthService);
+  dialog = inject(MatDialog);
   taskId = Number(this.route.snapshot.paramMap.get('id'));
 
   // Same limit as @Size(max = 255) in the backend's CreateCommentRequest
@@ -44,6 +49,7 @@ export class TaskDetails {
   });
 
   constructor() {
+    this.taskService.errorMessage.set(null);
     this.taskService.loadTask(this.taskId);
     this.commentService.loadComments(this.taskId);
   }
@@ -56,6 +62,16 @@ export class TaskDetails {
     // resetForm() calls commentForm.reset() and also clears the "submitted" state,
     // so the empty textarea is not shown as an error right after sending
     formDirective.resetForm();
+  }
+  onDelete() {
+    const title = this.taskService.selectedTask()?.title;
+    this.dialog.open(ConfirmDialog, {
+      data: {title: "Delete task", message: `Do you want to delete the task "${title}"?`}
+    }).afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.taskService.deleteTask(this.taskId);
+      }
+    });
   }
 
   protected readonly TaskService = TaskService;
