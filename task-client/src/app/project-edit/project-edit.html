@@ -1,0 +1,36 @@
+<div class="form-card">
+  <h1>Edit project</h1>
+
+  <form [formGroup]="projectEditForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field class="field">
+      <mat-label>Project name</mat-label>
+      <input type="text" formControlName="name" matInput required/>
+      @if (projectEditForm.controls.name.hasError('required')) {
+        <mat-error>Please add a project name</mat-error>
+      } @else if (projectEditForm.controls.name.hasError('maxlength')) {
+        <mat-error>Name cannot be longer than {{ maxNameLength }} characters</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- A normal input, not a textarea: the backend rejects descriptions with line breaks -->
+    <mat-form-field class="field">
+      <mat-label>Description</mat-label>
+      <input type="text" formControlName="description" matInput required/>
+      @if (projectEditForm.controls.description.hasError('required')) {
+        <mat-error>Please add a description</mat-error>
+      } @else if (projectEditForm.controls.description.hasError('maxlength')) {
+        <mat-error>Description cannot be longer than {{ maxDescriptionLength }} characters</mat-error>
+      }
+    </mat-form-field>
+
+    @if (projectService.errorMessage(); as error) {
+      <p class="form-error">{{ error }}</p>
+    }
+    <button type="submit" mat-flat-button class="form-button" [disabled]="!projectEditForm.valid">
+      <mat-icon>save</mat-icon>
+      Save changes
+    </button>
+    <button type="button" mat-stroked-button class="form-button" [routerLink]="['/projects', projectId]">Cancel</button>
+  </form>
+</div>

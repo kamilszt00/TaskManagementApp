@@ -15,3 +15,7 @@ export interface Project {
   description:string;
   managerID:number
 }
+export interface UpdateProjectRequest {
+  name:string,
+  description:string
+}

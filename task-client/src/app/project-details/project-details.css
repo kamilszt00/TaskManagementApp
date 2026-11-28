@@ -72,7 +72,8 @@ dd {
 }
 
 /* New task (managers and admins only) */
-.new-task {
+.new-task,
+.edit-project {
   width: 100%;
   min-height: 44px;
   margin-bottom: 16px;

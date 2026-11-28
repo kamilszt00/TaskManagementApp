@@ -77,6 +77,10 @@
       <mat-icon>add</mat-icon>
       New task
     </button>
+    <button type="button" mat-stroked-button class="edit-project" [routerLink]="['/projects', project.id, 'edit']">
+      <mat-icon>edit</mat-icon>
+      Edit project
+    </button>
   }
 
   @if (taskService.errorMessage(); as error) {

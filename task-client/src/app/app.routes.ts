@@ -7,6 +7,7 @@ import {TaskCreate} from './task-create/task-create';
 import {TaskEdit} from './task-edit/task-edit';
 import {ProjectList} from './project-list/project-list';
 import {ProjectDetails} from './project-details/project-details';
+import {ProjectEdit} from './project-edit/project-edit';
 import {roleGuard} from './role-guard';
 
 
@@ -50,6 +51,12 @@ export const routes: Routes = [
     title:'Your projects',
     component: ProjectList,
     canActivate: [authGuard]
+  },
+  {
+    path: 'projects/:id/edit',
+    title: 'Edit project',
+    component: ProjectEdit,
+    canActivate: [authGuard, roleGuard(['ADMIN','MANAGER'])]
   },
   {
     path: 'projects/:id',

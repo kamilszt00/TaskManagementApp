@@ -1,7 +1,7 @@
 import {inject, Service, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {Project} from './project.model';
+import {Project, UpdateProjectRequest} from './project.model';
 import {environment} from '../environments/environment';
 import {User} from './user.model';
 
@@ -32,6 +32,16 @@ export class ProjectService {
         this.errorMessage.set(null);
       },
       error: err => this.errorMessage.set("Could not load the project")
+    })
+  }
+
+  updateProject(id: number, request: UpdateProjectRequest) {
+    this.httpClient.patch(`${environment.apiUrl}/project/${id}`, request).subscribe({
+      next: () => {
+        this.router.navigate(['/projects', id]);
+        this.errorMessage.set(null);
+      },
+      error: () => this.errorMessage.set("Cannot update the project")
     })
   }
 
