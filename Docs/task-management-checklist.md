@@ -5,8 +5,8 @@ Part 1 is what the frontend needs to work for all three roles. Part 2 is everyth
 # Part 1: Essential for a functional frontend
 
 ### Manager frontend
-- [ ] "New task" leftover: reset the old error message when the form opens
-- [ ] Task details: delete (with a confirmation dialog)
+- [x] "New task" leftover: reset the old error message when the form opens
+- [x] Task details: delete (with a confirmation dialog)
 - [ ] Task details: reassign (dropdown of project members)
 - [ ] Task details: edit
 - [ ] Edit project: name and description
@@ -51,6 +51,7 @@ Part 1 is what the frontend needs to work for all three roles. Part 2 is everyth
 - [ ] Visual polish of the project list card
 - [ ] Visual polish of the project details card
 - [ ] Task details card: remove duplicate rows (Status, Task Title)
+- [ ] Task details: show Delete only to the manager of this project (`canManage()` checks the role only; another project's manager sees the button and gets the error box)
 - [ ] Format `dueDate` with the `date` pipe
 - [ ] Readable statuses ("In progress" instead of `IN_PROGRESS`)
 - [ ] Error and success messages as snackbars

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {TaskService} from '../task.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
@@ -11,6 +11,9 @@ import {MatError, MatFormField, MatHint, MatInput, MatLabel} from '@angular/mate
 import {AuthService} from '../task-list/auth.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialog} from '../confirm-dialog/confirm-dialog';
+import {ProjectService} from '../project.service';
+import {MatOption} from '@angular/material/core';
+import {MatSelect} from '@angular/material/select';
 
 @Component({
   imports: [
@@ -24,7 +27,9 @@ import {ConfirmDialog} from '../confirm-dialog/confirm-dialog';
     MatLabel,
     MatInput,
     MatError,
-    MatHint
+    MatHint,
+    MatOption,
+    MatSelect
   ],
   selector: 'app-task-details',
   styleUrl: './task-details.css',
@@ -37,6 +42,9 @@ export class TaskDetails {
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   taskId = Number(this.route.snapshot.paramMap.get('id'));
+  projectService = inject(ProjectService);
+  reassigning = signal(false);
+  selectedUser = new FormControl<number | null>(null);
 
   // Same limit as @Size(max = 255) in the backend's CreateCommentRequest
   readonly maxCommentLength = 255;
@@ -72,6 +80,18 @@ export class TaskDetails {
         this.taskService.deleteTask(this.taskId);
       }
     });
+  }
+  onStartReassign(projectId: number) {
+    this.projectService.loadMembers(projectId);
+    this.reassigning.set(true);
+  }
+
+  onReassign() {
+    const userId = this.selectedUser.value;
+    if (!userId) return;
+    this.taskService.reassignTask(this.taskId, userId);
+    this.reassigning.set(false);
+    this.selectedUser.reset();
   }
 
   protected readonly TaskService = TaskService;

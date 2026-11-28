@@ -6,29 +6,36 @@ The task list itself is in `task-management-checklist.md` (Part 1 = essential fo
 ## How we work
 - The student writes the code. Claude is the mentor: explains, gives hints, reviews. No ready solutions unless asked.
 - One small step at a time. Name the exact file and line, show the pattern on an unrelated example, compare with Java/Spring (TypeScript syntax is new).
-- Claude edits code only on request (so far: spec files, styling, the checklist).
+- Claude edits code only on request (so far: spec files, styling, the checklist, `onDelete()` and the task details error box).
 - "check" means: read the diff, compile, run the tests, then say what is right and what to fix.
 
-## Last session: 2026-11-24
+## Last session: 2026-11-26
 
 ### Finished
-- Role helpers `canManage` and `isAdmin` in `AuthService`
-- `roleGuard([...])` in `role-guard.ts`, used on `/tasks` (ADMIN) and `/tasks/new` (ADMIN, MANAGER)
-- Toolbar links per role
-- Links and redirects that led to `/tasks` now go to the project or to `/projects`
-- `ConfirmDialog`, used for "Remove member" on the project page
-- New task from the project page: `?projectId=` in the address, assignee dropdown, Cancel back to the project, error message
-- Styling of the new pieces, done by Claude
+- Leftovers from 2026-11-24: error reset in `task-create.ts`, unused `MatCardModule` removed from `task-list.ts` (commit `48beee4`)
+- **Delete task**, tested in the browser with all roles (code commit `ff3831c`):
+  - `TaskService.deleteTask(id)`: reads `projectID` from `selectedTask()` into a `const` first, returns early if it is missing, then `DELETE /task/{id}`, navigates to `/projects/{projectId}` and clears `selectedTask`
+  - `TaskDetails.onDelete()`: `ConfirmDialog` → `afterClosed()` → `deleteTask(this.taskId)` (written by Claude on request)
+  - "Delete" button on the task details page inside `@if (authService.canManage())`
+  - Red `.task-error` box above the buttons for `taskService.errorMessage()`, and the message is reset in the constructor (done by Claude on request)
+
+### Things the student learned this session
+- Guard clause in TS: `const x = a()?.b; if (!x) return;` (same as an early `return` on `null` in Java). `?.` gives `undefined` instead of throwing.
+- A service method like `loadTask` returns `void`; its result comes later through the signal (`selectedTask()`), not as a return value.
+- A click handler needs a parameter only when the button is inside `@for` (like `onRemoveMember(user)`); on a details page use the component field (`this.taskId`).
+- If a service sets `errorMessage`, the page must also show it, or failures are silent.
 
 ### Do this first next time
-1. `task-create.ts`: reset `taskService.errorMessage` in the constructor (an old error from another page can show in the new form; `createTaskRequest` now resets it after a successful create, but that does not cover opening the form), and move the constructor above `onSubmit()`
-2. `task-list.ts`: remove the unused `MatCardModule`
-3. Commit. The code from this session is committed (`2a90e48`); when this note was written, only the checklist and this file in `Docs` were not
+- Commit the `Docs` changes (checklist and this file) if they are still uncommitted.
 
 ### Then continue with
-**Delete task** on the task details page. Reuses `ConfirmDialog` (see `onRemoveMember` in `project-details.ts`). Backend: `DELETE /task/{id}`, manager of the project or admin. Afterwards go back to the task's project.
+**Reassign** on the task details page.
+- Backend: `PATCH /task/{id}/reassign?userId=...` (a query parameter, not a body; `@RequestParam` in `TaskController.java:58`). Returns the updated `TaskResponse`.
+- Members for the dropdown: `projectService.loadMembers(projectId)` + `projectService.members()`, as in `task-create`. The project id comes from `selectedTask()`, which is loaded asynchronously, so it is not available in the constructor right away.
+- Backend refuses completed tasks and the same user, so hide or disable it for completed tasks and show the error box.
+- Visible for `canManage()` only.
 
-Order after that: reassign, edit task, edit project, then admin: list users, create user, delete user, create project, delete/merge project, then the phone task.
+Order after that: edit task, edit project, then admin: list users, create user, delete user, create project, delete/merge project, then the phone task.
 
 ## Conventions
 - Forms: main action is `type="submit" mat-flat-button`; every other button is `type="button" mat-stroked-button` (a button without a type submits the form)

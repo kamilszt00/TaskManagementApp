@@ -67,6 +67,15 @@ export class TaskService {
       error: () => this.errorMessage.set("Cannot delete the task")
     })
   }
+  reassignTask(id:number, userId: number) {
+    this.httpClient.patch<Task>(`${environment.apiUrl}/task/${id}/reassign`,null, {params : { userId}}).subscribe({
+      next: updatedTask => {
+        this.selectedTask.set(updatedTask);
+        this.errorMessage.set(null);
+      },
+      error: () => this.errorMessage.set("Cannot reassign task"),
+    })
+  }
   loadProjectTasks(projectId : number) {
     this.httpClient.get<Task[]>(`${environment.apiUrl}/project/${projectId}/tasks`).subscribe({
       next: tasks => {
