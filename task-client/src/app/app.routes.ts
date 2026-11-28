@@ -9,6 +9,7 @@ import {ProjectList} from './project-list/project-list';
 import {ProjectDetails} from './project-details/project-details';
 import {ProjectEdit} from './project-edit/project-edit';
 import {UserList} from './user-list/user-list';
+import {UserCreate} from './user-create/user-create';
 import {roleGuard} from './role-guard';
 
 
@@ -64,6 +65,12 @@ export const routes: Routes = [
     title: 'Project details',
     component: ProjectDetails,
     canActivate: [authGuard]
+  },
+  {
+    path: 'users/new',
+    title: 'Create new user',
+    component: UserCreate,
+    canActivate: [authGuard, roleGuard(['ADMIN'])]
   },
   {
     path: 'users',

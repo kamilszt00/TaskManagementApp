@@ -2,9 +2,11 @@ import {Component, inject} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
 import {UserService} from '../userService';
+import {MatButton} from '@angular/material/button';
+import {RouterLink} from '@angular/router';
 
 @Component({
-  imports: [MatCardModule, MatIcon],
+  imports: [MatCardModule, MatIcon, MatButton, RouterLink],
   selector: 'app-user-list',
   styleUrl: './user-list.css',
   templateUrl: './user-list.html',

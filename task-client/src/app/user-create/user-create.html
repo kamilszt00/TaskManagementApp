@@ -1,0 +1,51 @@
+<div class="form-card">
+  <h1>Create new user</h1>
+
+  <form [formGroup]="userCreateForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field class="field">
+      <mat-label>Username</mat-label>
+      <input type="text" formControlName="username" matInput required autocomplete="off"/>
+      @if (userCreateForm.controls.username.hasError('required')) {
+        <mat-error>Please add a username</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="field">
+      <mat-label>Email</mat-label>
+      <input type="email" formControlName="email" matInput required autocomplete="off"/>
+      @if (userCreateForm.controls.email.hasError('required')) {
+        <mat-error>Please add an email</mat-error>
+      } @else if (userCreateForm.controls.email.hasError('email')) {
+        <mat-error>This is not a valid email</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="field">
+      <mat-label>Password</mat-label>
+      <!-- new-password: the browser should not fill in the admin's own saved password -->
+      <input type="password" formControlName="password" matInput required autocomplete="new-password"/>
+      @if (userCreateForm.controls.password.hasError('required')) {
+        <mat-error>Please add a password</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="EMPLOYEE">Employee</mat-option>
+        <mat-option value="MANAGER">Manager</mat-option>
+        <mat-option value="ADMIN">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if (userService.errorMessage(); as error) {
+      <p class="form-error">{{ error }}</p>
+    }
+    <button type="submit" mat-flat-button class="form-button" [disabled]="!userCreateForm.valid">
+      <mat-icon>person_add</mat-icon>
+      Create user
+    </button>
+    <button type="button" mat-stroked-button class="form-button" routerLink="/users">Cancel</button>
+  </form>
+</div>

@@ -1,5 +1,10 @@
 <h2>Users</h2>
 
+<button mat-flat-button class="new-user" routerLink="/users/new">
+  <mat-icon>person_add</mat-icon>
+  New user
+</button>
+
 @if (userService.errorMessage(); as error) {
   <p class="user-error">{{ error }}</p>
 }

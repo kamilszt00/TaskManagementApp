@@ -1,5 +1,12 @@
 /* Same look as the members card in project-details */
 
+/* Same as the "New task" button in project-details */
+.new-user {
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 16px;
+}
+
 .user-error {
   margin: 0 0 16px;
   padding: 8px 12px;
