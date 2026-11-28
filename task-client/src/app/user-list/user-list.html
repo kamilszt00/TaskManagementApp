@@ -1,0 +1,29 @@
+<h2>Users</h2>
+
+@if (userService.errorMessage(); as error) {
+  <p class="user-error">{{ error }}</p>
+}
+
+@for (section of sections; track section.title) {
+  <mat-card class="users-card">
+    <mat-card-header>
+      <mat-card-title class="users-title">
+        <mat-icon>{{ section.icon }}</mat-icon>
+        {{ section.title }} ({{ section.users().length }})
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ul class="user-list">
+        @for (user of section.users(); track user.id) {
+          <li class="user-row">
+            <mat-icon class="user-avatar">account_circle</mat-icon>
+            <span class="user-name">{{ user.username }}</span>
+            <span class="user-id">ID {{ user.id }}</span>
+          </li>
+        } @empty {
+          <li class="users-empty">{{ section.empty }}</li>
+        }
+      </ul>
+    </mat-card-content>
+  </mat-card>
+}

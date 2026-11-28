@@ -10,6 +10,8 @@
         <button mat-button routerLink="/projects" routerLinkActive="active-link">My Projects</button>
         @if (authService.isAdmin()) {
           <button mat-button routerLink="/tasks" routerLinkActive="active-link">Task List</button>
+          <button mat-button routerLink="/users" routerLinkActive="active-link">Users</button>
+
         }
         <button mat-icon-button (click)="logout()" aria-label="Logout">
           <mat-icon>logout</mat-icon>
