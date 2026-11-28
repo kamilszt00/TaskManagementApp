@@ -7,8 +7,8 @@ Part 1 is what the frontend needs to work for all three roles. Part 2 is everyth
 ### Manager frontend
 - [x] "New task" leftover: reset the old error message when the form opens
 - [x] Task details: delete (with a confirmation dialog)
-- [ ] Task details: reassign (dropdown of project members)
-- [ ] Task details: edit
+- [x] Task details: reassign (dropdown of project members)
+- [x] Task details: edit
 - [ ] Edit project: name and description
 
 ### Admin frontend

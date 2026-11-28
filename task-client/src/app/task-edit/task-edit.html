@@ -1,0 +1,45 @@
+<div class="form-card">
+  <h1>Edit task</h1>
+
+  <form [formGroup]="taskEditForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field class="field">
+      <mat-label>Title of the task</mat-label>
+      <input type="text" formControlName="title" matInput required/>
+      @if (taskEditForm.controls.title.touched && taskEditForm.controls.title.hasError('required')) {
+        <mat-error>Please add task title</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="TODO">To do</mat-option>
+        <mat-option value="IN_PROGRESS">In progress</mat-option>
+        <mat-option value="COMPLETED">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Assignee</mat-label>
+      <mat-select formControlName="assigneeID">
+        @for (assignee of projectService.members(); track assignee.id) {
+          <mat-option [value]="assignee.id">{{ assignee.username }}</mat-option>
+        } @empty {
+          <mat-option disabled>No members in this project</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tags IDs, e.g 1,2</mat-label>
+      <input type="text" formControlName="tagsID" matInput required/>
+    </mat-form-field>
+    @if (taskService.errorMessage(); as error) {
+      <p class="form-error">{{ error }}</p>
+    }
+    <button type="submit" mat-flat-button class="form-button" [disabled]="!taskEditForm.valid">
+      <mat-icon>save</mat-icon>
+      Save changes
+    </button>
+    <button type="button" mat-stroked-button class="form-button" [routerLink]="['/tasks', taskId]">Cancel</button>
+  </form>
+</div>

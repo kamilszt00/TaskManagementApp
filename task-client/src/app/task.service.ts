@@ -1,5 +1,5 @@
 import {Service, signal, computed, inject} from '@angular/core'
-import {CreateTaskRequest, Task} from './task.model';
+import {CreateTaskRequest, Task, UpdateTaskRequest} from './task.model';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment} from '../environments/environment';
@@ -41,7 +41,7 @@ export class TaskService {
   loadTask(id : number) {
     this.httpClient.get<Task>(`${environment.apiUrl}/task/${id}`).subscribe({
       next: task => this.selectedTask.set(task),
-      error: err => this.errorMessage.set(err.error.message),
+      error: err => this.errorMessage.set(err.error?.message ?? "Could not load the task"),
     })
   }
 
@@ -53,6 +53,15 @@ export class TaskService {
       },
       error: () => this.errorMessage.set("Cannot create task")
 
+    })
+  }
+  updateTask(id: number, request: UpdateTaskRequest) {
+    this.httpClient.put(`${environment.apiUrl}/task/${id}`, request).subscribe({
+      next: () => {
+        this.router.navigate(['/tasks', id]);
+        this.errorMessage.set(null);
+      },
+      error: () => this.errorMessage.set("Cannot update the task")
     })
   }
   deleteTask(id:number) {

@@ -20,6 +20,13 @@ export interface CreateTaskRequest {
   tagsID: number[];
 
 }
+export interface UpdateTaskRequest {
+  title: string;
+  status: TaskStatus;
+  projectID: number;
+  assigneeID: number;
+  tagsID: number[];
+}
 
 
 

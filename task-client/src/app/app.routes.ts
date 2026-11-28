@@ -4,6 +4,7 @@ import { TaskList} from './task-list/task-list';
 import {authGuard} from './auth-guard';
 import {TaskDetails} from './task-details/task-details';
 import {TaskCreate} from './task-create/task-create';
+import {TaskEdit} from './task-edit/task-edit';
 import {ProjectList} from './project-list/project-list';
 import {ProjectDetails} from './project-details/project-details';
 import {roleGuard} from './role-guard';
@@ -30,6 +31,12 @@ export const routes: Routes = [
     path:'tasks/new',
     title:'Create new task',
     component: TaskCreate,
+    canActivate: [authGuard, roleGuard(['ADMIN','MANAGER'])]
+  },
+  {
+    path:'tasks/:id/edit',
+    title:'Edit task',
+    component: TaskEdit,
     canActivate: [authGuard, roleGuard(['ADMIN','MANAGER'])]
   },
   {

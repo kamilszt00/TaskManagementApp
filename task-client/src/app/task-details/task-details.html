@@ -90,6 +90,7 @@
   <button mat-stroked-button [routerLink]="['/projects', task.projectID]">Back to list</button>
   @if (authService.canManage()) {
     <button type="button" mat-stroked-button (click)="onDelete()">Delete</button>
+    <button type="button" mat-stroked-button [routerLink]="['/tasks',task.id, 'edit']">Edit</button>
     @if (task.status !== 'COMPLETED') {
       <button type="button" mat-stroked-button (click)="onStartReassign(task.projectID)">Reassign</button>
     }
@@ -102,11 +103,11 @@
         @for (assignee of projectService.members(); track assignee.id) {
           <mat-option [value]="assignee.id" [disabled]="assignee.id === task.assigneeID">{{ assignee.username }}</mat-option>
         } @empty {
-          <mat-option [disabled]="!selectedUser.value">No members in this project</mat-option>
+          <mat-option disabled>No members in this project</mat-option>
         }
       </mat-select>
     </mat-form-field>
-    <button type="button" mat-flat-button (click)="onReassign()">Save</button>
+    <button type="button" mat-flat-button [disabled]="!selectedUser.value" (click)="onReassign()">Save</button>
     <button type="button" mat-stroked-button (click)="reassigning.set(false)">Cancel</button>
   }
 }
